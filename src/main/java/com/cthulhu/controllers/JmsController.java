@@ -1,15 +1,12 @@
 package com.cthulhu.controllers;
 
 import com.cthulhu.events.EventRoll;
-import com.cthulhu.models.Character;
+import com.cthulhu.models.Investigator;
 import com.cthulhu.models.CustomListener;
 import com.cthulhu.services.DiceRollingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.jms.*;
 
@@ -24,15 +21,15 @@ public class JmsController {
 
     @GetMapping("/get")
     public void simpleGet() {
-        jmsTemplate.convertAndSend("queue", new Character("Oskar", "Lokes"));
+        jmsTemplate.convertAndSend("queue", Investigator.builder().owner("Oskar").name("John").build());
     }
 
     @PostMapping("/createQueue")
-    public void createQueue(@RequestBody Character character) throws JMSException {
+    public void createQueue(@RequestParam String name) throws JMSException {
         Session session = connectionFactory.createConnection().createSession(false, Session.AUTO_ACKNOWLEDGE);
-        Queue queue = session.createQueue(character.getName());
+        Queue queue = session.createQueue(name);
         MessageConsumer consumer = session.createConsumer(queue);
-        consumer.setMessageListener(new CustomListener(character.getName(), diceRollingService));
+        consumer.setMessageListener(new CustomListener(name, diceRollingService));
     }
 
     @PostMapping("/sendToQueue")
