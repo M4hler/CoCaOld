@@ -1,6 +1,7 @@
 package com.cthulhu.models;
 
 import lombok.*;
+import org.apache.commons.beanutils.PropertyUtils;
 
 @Getter
 @Setter
@@ -19,4 +20,8 @@ public class Investigator {
     private int intelligence;
     private int power;
     private int education;
+
+    public int getFieldValueByName(String name) throws Exception {
+        return (int)PropertyUtils.getProperty(this, name);
+    }
 }
