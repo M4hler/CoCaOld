@@ -3,14 +3,19 @@ package com.cthulhu.models;
 import lombok.*;
 import org.apache.commons.beanutils.PropertyUtils;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Investigator {
-    private String owner;
+    @Id
     private String name;
+    private String owner;
 
     private int strength;
     private int constitution;
