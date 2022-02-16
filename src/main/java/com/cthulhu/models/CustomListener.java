@@ -1,23 +1,28 @@
 package com.cthulhu.models;
 
 import com.cthulhu.events.EventRoll;
+import com.cthulhu.events.EventRollResult;
 import com.cthulhu.events.EventType;
 import com.cthulhu.services.DiceRollingService;
+import com.cthulhu.services.InvestigatorService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 
 import javax.jms.Message;
 import javax.jms.MessageListener;
+import java.util.List;
 
 public class CustomListener implements MessageListener {
     private final String queueName;
     private final ObjectMapper objectMapper;
     private final DiceRollingService diceRollingService;
+    private final InvestigatorService investigatorService;
 
-    public CustomListener(String queueName, DiceRollingService diceRollingService) {
+    public CustomListener(String queueName, DiceRollingService diceRollingService, InvestigatorService investigatorService) {
         this.queueName = queueName;
         objectMapper = new ObjectMapper();
         this.diceRollingService = diceRollingService;
+        this.investigatorService = investigatorService;
     }
 
     @Override
@@ -30,8 +35,13 @@ public class CustomListener implements MessageListener {
             switch(type) {
                 case ROLL:
                     EventRoll event = objectMapper.readValue(messageBody, EventRoll.class);
-                    int a = diceRollingService.rollDice(event.getDie());
-                    System.out.println("Rolled: " + a + " from " + event.getDie() + " die at " + queueName);
+                    List<Investigator> investigatorTargets = investigatorService.getInvestigatorsWithNames(event.getInvestigatorTargets());
+                    List<EventRollResult> rollResults = diceRollingService.rollTestsAgainstTargetValue(event.getDie(), investigatorTargets, event.getTargetSkill());
+
+                    for(EventRollResult e : rollResults) {
+                        System.out.println("Rolled " + e.getValue() + " from " + event.getDie() + " for " + e.getInvestigatorName() +
+                                " with success level of " + e.getGraduation() + " at " + queueName);
+                    }
                     break;
             }
         }
