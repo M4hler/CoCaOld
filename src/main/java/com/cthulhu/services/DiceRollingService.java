@@ -1,6 +1,6 @@
 package com.cthulhu.services;
 
-import com.cthulhu.enums.RollGraduation;
+import com.cthulhu.enums.RollGradation;
 import com.cthulhu.events.EventRollResult;
 import com.cthulhu.models.Investigator;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class DiceRollingService {
         for(Investigator i : investigators) {
             Object[] rollResult = rollDiceAgainstThreshold(dice, i.getFieldValueByName(targetSkill));
             int roll = (int)rollResult[0];
-            RollGraduation graduation = (RollGraduation)rollResult[1];
+            RollGradation graduation = (RollGradation)rollResult[1];
             result.add(new EventRollResult(i.getName(), roll, graduation));
         }
 
@@ -40,23 +40,23 @@ public class DiceRollingService {
         if(roll > threshold) {
             if((threshold < 50 && roll >= 96) ||
                     (threshold >= 50 && roll == 100)) {
-                return new Object[]{roll, RollGraduation.FUMBLE};
+                return new Object[]{roll, RollGradation.FUMBLE};
             }
             else {
-                return new Object[]{roll, RollGraduation.FAILURE};
+                return new Object[]{roll, RollGradation.FAILURE};
             }
         }
         else if(roll == 1) {
-            return new Object[]{roll, RollGraduation.CRITICAL};
+            return new Object[]{roll, RollGradation.CRITICAL};
         }
         else if(roll <= 0.2 * threshold){
-            return new Object[]{roll, RollGraduation.EXTREME};
+            return new Object[]{roll, RollGradation.EXTREME};
         }
         else if(roll <= 0.5 * threshold) {
-            return new Object[]{roll, RollGraduation.HARD};
+            return new Object[]{roll, RollGradation.HARD};
         }
         else {
-            return new Object[]{roll, RollGraduation.REGULAR};
+            return new Object[]{roll, RollGradation.REGULAR};
         }
     }
 }

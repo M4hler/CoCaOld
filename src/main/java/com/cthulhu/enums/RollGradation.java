@@ -1,5 +1,5 @@
 package com.cthulhu.enums;
 
-public enum RollGraduation {
+public enum RollGradation {
     FUMBLE, FAILURE, REGULAR, HARD, EXTREME, CRITICAL
 }
