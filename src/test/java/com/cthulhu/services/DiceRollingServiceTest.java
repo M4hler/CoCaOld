@@ -21,7 +21,7 @@ public class DiceRollingServiceTest {
 
     @BeforeEach
     public void beforeEach() throws Exception {
-        when(diceRollingService.rollTestsAgainstTargetValue(any(), any(), any(), any())).thenCallRealMethod();
+        when(diceRollingService.rollTestsAgainstTargetValue(any(), any(), any(), any(), any())).thenCallRealMethod();
     }
 
     @Test
@@ -30,11 +30,26 @@ public class DiceRollingServiceTest {
 
         Investigator investigator = Investigator.builder().name("Alice").strength(50).build();
         List<Investigator> list = List.of(investigator);
-        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.REGULAR);
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.REGULAR, 0);
 
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
-        Assertions.assertEquals(RollGradation.REGULAR, result.getGraduation());
+        Assertions.assertEquals(RollGradation.REGULAR, result.getGradation());
+        Assertions.assertEquals(40, result.getValue());
+        Assertions.assertEquals("Alice", result.getInvestigatorName());
+    }
+
+    @Test
+    public void regularSuccessWithBonusDie() throws Exception {
+        when(diceRollingService.rollDice(any())).thenReturn(10).thenReturn(6).thenReturn(4);
+
+        Investigator investigator = Investigator.builder().name("Alice").strength(50).build();
+        List<Investigator> list = List.of(investigator);
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.REGULAR, 1);
+
+        Assertions.assertEquals(1, resultList.size());
+        EventRollResult result = resultList.get(0);
+        Assertions.assertEquals(RollGradation.REGULAR, result.getGradation());
         Assertions.assertEquals(40, result.getValue());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
@@ -45,11 +60,11 @@ public class DiceRollingServiceTest {
 
         Investigator investigator = Investigator.builder().name("Alice").strength(50).build();
         List<Investigator> list = List.of(investigator);
-        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.REGULAR);
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.REGULAR, 0);
 
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
-        Assertions.assertEquals(RollGradation.HARD, result.getGraduation());
+        Assertions.assertEquals(RollGradation.HARD, result.getGradation());
         Assertions.assertEquals(25, result.getValue());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
@@ -60,11 +75,11 @@ public class DiceRollingServiceTest {
 
         Investigator investigator = Investigator.builder().name("Alice").strength(50).build();
         List<Investigator> list = List.of(investigator);
-        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.REGULAR);
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.REGULAR, 0);
 
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
-        Assertions.assertEquals(RollGradation.EXTREME, result.getGraduation());
+        Assertions.assertEquals(RollGradation.EXTREME, result.getGradation());
         Assertions.assertEquals(10, result.getValue());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
@@ -75,11 +90,11 @@ public class DiceRollingServiceTest {
 
         Investigator investigator = Investigator.builder().name("Alice").strength(50).build();
         List<Investigator> list = List.of(investigator);
-        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.REGULAR);
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.REGULAR, 0);
 
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
-        Assertions.assertEquals(RollGradation.CRITICAL, result.getGraduation());
+        Assertions.assertEquals(RollGradation.CRITICAL, result.getGradation());
         Assertions.assertEquals(1, result.getValue());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
@@ -90,11 +105,11 @@ public class DiceRollingServiceTest {
 
         Investigator investigator = Investigator.builder().name("Alice").strength(4).build();
         List<Investigator> list = List.of(investigator);
-        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.EXTREME);
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.EXTREME, 0);
 
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
-        Assertions.assertEquals(RollGradation.CRITICAL, result.getGraduation());
+        Assertions.assertEquals(RollGradation.CRITICAL, result.getGradation());
         Assertions.assertEquals(1, result.getValue());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
@@ -105,11 +120,11 @@ public class DiceRollingServiceTest {
 
         Investigator investigator = Investigator.builder().name("Alice").strength(3).build();
         List<Investigator> list = List.of(investigator);
-        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.REGULAR);
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.REGULAR, 0);
 
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
-        Assertions.assertEquals(RollGradation.REGULAR, result.getGraduation());
+        Assertions.assertEquals(RollGradation.REGULAR, result.getGradation());
         Assertions.assertEquals(2, result.getValue());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
@@ -120,12 +135,27 @@ public class DiceRollingServiceTest {
 
         Investigator investigator = Investigator.builder().name("Alice").strength(50).build();
         List<Investigator> list = List.of(investigator);
-        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.REGULAR);
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.REGULAR, 0);
 
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
-        Assertions.assertEquals(RollGradation.FAILURE, result.getGraduation());
+        Assertions.assertEquals(RollGradation.FAILURE, result.getGradation());
         Assertions.assertEquals(60, result.getValue());
+        Assertions.assertEquals("Alice", result.getInvestigatorName());
+    }
+
+    @Test
+    public void failureWithPenaltyDie() throws Exception {
+        when(diceRollingService.rollDice(any())).thenReturn(1).thenReturn(2).thenReturn(5);
+
+        Investigator investigator = Investigator.builder().name("Alice").strength(50).build();
+        List<Investigator> list = List.of(investigator);
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.REGULAR, -1);
+
+        Assertions.assertEquals(1, resultList.size());
+        EventRollResult result = resultList.get(0);
+        Assertions.assertEquals(RollGradation.FAILURE, result.getGradation());
+        Assertions.assertEquals(51, result.getValue());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
 
@@ -135,11 +165,11 @@ public class DiceRollingServiceTest {
 
         Investigator investigator = Investigator.builder().name("Alice").strength(60).build();
         List<Investigator> list = List.of(investigator);
-        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.HARD);
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.HARD, 0);
 
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
-        Assertions.assertEquals(RollGradation.FAILURE, result.getGraduation());
+        Assertions.assertEquals(RollGradation.FAILURE, result.getGradation());
         Assertions.assertEquals(40, result.getValue());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
@@ -150,11 +180,11 @@ public class DiceRollingServiceTest {
 
         Investigator investigator = Investigator.builder().name("Alice").strength(60).build();
         List<Investigator> list = List.of(investigator);
-        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.EXTREME);
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.EXTREME, 0);
 
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
-        Assertions.assertEquals(RollGradation.FAILURE, result.getGraduation());
+        Assertions.assertEquals(RollGradation.FAILURE, result.getGradation());
         Assertions.assertEquals(40, result.getValue());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
@@ -165,11 +195,11 @@ public class DiceRollingServiceTest {
 
         Investigator investigator = Investigator.builder().name("Alice").strength(60).build();
         List<Investigator> list = List.of(investigator);
-        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.EXTREME);
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.EXTREME, 0);
 
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
-        Assertions.assertEquals(RollGradation.FAILURE, result.getGraduation());
+        Assertions.assertEquals(RollGradation.FAILURE, result.getGradation());
         Assertions.assertEquals(20, result.getValue());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
@@ -180,11 +210,11 @@ public class DiceRollingServiceTest {
 
         Investigator investigator = Investigator.builder().name("Alice").strength(50).build();
         List<Investigator> list = List.of(investigator);
-        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.REGULAR);
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.REGULAR, 0);
 
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
-        Assertions.assertEquals(RollGradation.FUMBLE, result.getGraduation());
+        Assertions.assertEquals(RollGradation.FUMBLE, result.getGradation());
         Assertions.assertEquals(100, result.getValue());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
@@ -195,11 +225,11 @@ public class DiceRollingServiceTest {
 
         Investigator investigator = Investigator.builder().name("Alice").strength(49).build();
         List<Investigator> list = List.of(investigator);
-        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.REGULAR);
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.REGULAR, 0);
 
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
-        Assertions.assertEquals(RollGradation.FUMBLE, result.getGraduation());
+        Assertions.assertEquals(RollGradation.FUMBLE, result.getGradation());
         Assertions.assertEquals(96, result.getValue());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
@@ -210,12 +240,27 @@ public class DiceRollingServiceTest {
 
         Investigator investigator = Investigator.builder().name("Alice").strength(60).build();
         List<Investigator> list = List.of(investigator);
-        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.HARD);
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.HARD, 0);
 
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
-        Assertions.assertEquals(RollGradation.FUMBLE, result.getGraduation());
+        Assertions.assertEquals(RollGradation.FUMBLE, result.getGradation());
         Assertions.assertEquals(98, result.getValue());
+        Assertions.assertEquals("Alice", result.getInvestigatorName());
+    }
+
+    @Test
+    public void fumbleWithPenaltyDie() throws Exception {
+        when(diceRollingService.rollDice(any())).thenReturn(0).thenReturn(1).thenReturn(10);
+
+        Investigator investigator = Investigator.builder().name("Alice").strength(50).build();
+        List<Investigator> list = List.of(investigator);
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.REGULAR, -1);
+
+        Assertions.assertEquals(1, resultList.size());
+        EventRollResult result = resultList.get(0);
+        Assertions.assertEquals(RollGradation.FUMBLE, result.getGradation());
+        Assertions.assertEquals(100, result.getValue());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
 }

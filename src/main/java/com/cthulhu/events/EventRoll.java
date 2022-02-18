@@ -17,4 +17,5 @@ public class EventRoll extends Event {
     private List<String> investigatorTargets;
     private String targetSkill;
     private RollGradation difficulty;
+    private Integer bonusDice;
 }

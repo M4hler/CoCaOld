@@ -28,7 +28,7 @@ public class EventRollTest {
 
     @BeforeEach
     public void beforeAll() throws Exception {
-        when(diceRollingService.rollTestsAgainstTargetValue(any(), any(), any(), any())).thenCallRealMethod();
+        when(diceRollingService.rollTestsAgainstTargetValue(any(), any(), any(), any(), any())).thenCallRealMethod();
 
         Investigator investigator = Investigator.builder().name("John").strength(50).build();
         investigatorService.saveInvestigator(investigator);
@@ -51,7 +51,7 @@ public class EventRollTest {
         //for now going with simple timeout, will switch to await when listener actually performs some actions
         //that have visible status and can be periodically checked to determine if message was consumed
         verify(diceRollingService, timeout(200).times(1)).rollDice(any());
-        verify(diceRollingService, times(1)).rollTestsAgainstTargetValue(any(), any(), any(), any());
+        verify(diceRollingService, times(1)).rollTestsAgainstTargetValue(any(), any(), any(), any(), any());
     }
 
     @Test
@@ -64,7 +64,7 @@ public class EventRollTest {
         jmsController.sendToQueue(eventRoll);
 
         verify(diceRollingService, timeout(200).times(2)).rollDice(any());
-        verify(diceRollingService, times(2)).rollTestsAgainstTargetValue(any(), any(), any(), any());
+        verify(diceRollingService, times(2)).rollTestsAgainstTargetValue(any(), any(), any(), any(), any());
     }
 
     @Test
@@ -97,7 +97,7 @@ public class EventRollTest {
     }
 
     private EventRoll createEvent(int die, String queue, List<String> investigatorTargets, String targetSkill) {
-        EventRoll eventRoll = new EventRoll(die, investigatorTargets, targetSkill, RollGradation.REGULAR);
+        EventRoll eventRoll = new EventRoll(die, investigatorTargets, targetSkill, RollGradation.REGULAR, 0);
         eventRoll.setEventType(EventType.ROLL);
         eventRoll.setTargetQueue(queue);
         return eventRoll;

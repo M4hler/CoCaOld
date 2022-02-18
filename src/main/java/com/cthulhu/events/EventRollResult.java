@@ -13,5 +13,5 @@ import lombok.Setter;
 public class EventRollResult extends Event {
     private String investigatorName;
     private int value;
-    private RollGradation graduation;
+    private RollGradation gradation;
 }
