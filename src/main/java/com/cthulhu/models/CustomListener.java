@@ -36,7 +36,8 @@ public class CustomListener implements MessageListener {
                 case ROLL:
                     EventRoll event = objectMapper.readValue(messageBody, EventRoll.class);
                     List<Investigator> investigatorTargets = investigatorService.getInvestigatorsWithNames(event.getInvestigatorTargets());
-                    List<EventRollResult> rollResults = diceRollingService.rollTestsAgainstTargetValue(event.getDie(), investigatorTargets, event.getTargetSkill());
+                    List<EventRollResult> rollResults = diceRollingService.rollTestsAgainstTargetValue(event.getDie(),
+                            investigatorTargets, event.getTargetSkill(), event.getDifficulty());
 
                     for(EventRollResult e : rollResults) {
                         System.out.println("Rolled " + e.getValue() + " from " + event.getDie() + " for " + e.getInvestigatorName() +

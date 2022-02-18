@@ -17,14 +17,15 @@ public class DiceRollingService {
         generator = new SecureRandom();
     }
 
-    public List<EventRollResult> rollTestsAgainstTargetValue(Integer dice, List<Investigator> investigators, String targetSkill) throws Exception {
+    public List<EventRollResult> rollTestsAgainstTargetValue(Integer dice, List<Investigator> investigators,
+                                                             String targetSkill, RollGradation difficulty) throws Exception {
         List<EventRollResult> result = new ArrayList<>();
 
         for(Investigator i : investigators) {
-            Object[] rollResult = rollDiceAgainstThreshold(dice, i.getFieldValueByName(targetSkill));
+            Object[] rollResult = rollDiceAgainstThreshold(dice, i.getFieldValueByName(targetSkill), difficulty);
             int roll = (int)rollResult[0];
-            RollGradation graduation = (RollGradation)rollResult[1];
-            result.add(new EventRollResult(i.getName(), roll, graduation));
+            RollGradation gradation = (RollGradation)rollResult[1];
+            result.add(new EventRollResult(i.getName(), roll, gradation));
         }
 
         return result;
@@ -34,20 +35,28 @@ public class DiceRollingService {
         return generator.nextInt(number) + 1;
     }
 
-    private Object[] rollDiceAgainstThreshold(Integer dice, Integer threshold) {
+    private Object[] rollDiceAgainstThreshold(Integer dice, Integer threshold, RollGradation difficulty) {
         int roll = rollDice(dice);
 
-        if(roll > threshold) {
-            if((threshold < 50 && roll >= 96) ||
-                    (threshold >= 50 && roll == 100)) {
+        int difficultyThreshold = threshold;
+        if(difficulty == RollGradation.HARD) {
+            difficultyThreshold = (int)(0.5 * threshold);
+        }
+        else if(difficulty == RollGradation.EXTREME) {
+            difficultyThreshold = (int)(0.2 * threshold);
+        }
+
+        if(roll == 1) {
+            return new Object[]{roll, RollGradation.CRITICAL};
+        }
+        if(roll > difficultyThreshold) {
+            if((difficultyThreshold < 50 && roll >= 96) ||
+                    (difficultyThreshold >= 50 && roll == 100)) {
                 return new Object[]{roll, RollGradation.FUMBLE};
             }
             else {
                 return new Object[]{roll, RollGradation.FAILURE};
             }
-        }
-        else if(roll == 1) {
-            return new Object[]{roll, RollGradation.CRITICAL};
         }
         else if(roll <= 0.2 * threshold){
             return new Object[]{roll, RollGradation.EXTREME};

@@ -21,7 +21,7 @@ public class DiceRollingServiceTest {
 
     @BeforeEach
     public void beforeEach() throws Exception {
-        when(diceRollingService.rollTestsAgainstTargetValue(any(), any(), any())).thenCallRealMethod();
+        when(diceRollingService.rollTestsAgainstTargetValue(any(), any(), any(), any())).thenCallRealMethod();
     }
 
     @Test
@@ -30,7 +30,7 @@ public class DiceRollingServiceTest {
 
         Investigator investigator = Investigator.builder().name("Alice").strength(50).build();
         List<Investigator> list = List.of(investigator);
-        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength");
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.REGULAR);
 
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
@@ -45,7 +45,7 @@ public class DiceRollingServiceTest {
 
         Investigator investigator = Investigator.builder().name("Alice").strength(50).build();
         List<Investigator> list = List.of(investigator);
-        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength");
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.REGULAR);
 
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
@@ -60,7 +60,7 @@ public class DiceRollingServiceTest {
 
         Investigator investigator = Investigator.builder().name("Alice").strength(50).build();
         List<Investigator> list = List.of(investigator);
-        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength");
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.REGULAR);
 
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
@@ -75,7 +75,22 @@ public class DiceRollingServiceTest {
 
         Investigator investigator = Investigator.builder().name("Alice").strength(50).build();
         List<Investigator> list = List.of(investigator);
-        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength");
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.REGULAR);
+
+        Assertions.assertEquals(1, resultList.size());
+        EventRollResult result = resultList.get(0);
+        Assertions.assertEquals(RollGradation.CRITICAL, result.getGraduation());
+        Assertions.assertEquals(1, result.getValue());
+        Assertions.assertEquals("Alice", result.getInvestigatorName());
+    }
+
+    @Test
+    public void criticalSuccessButExtremeDifficulty() throws Exception {
+        when(diceRollingService.rollDice(any())).thenReturn(1);
+
+        Investigator investigator = Investigator.builder().name("Alice").strength(4).build();
+        List<Investigator> list = List.of(investigator);
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.EXTREME);
 
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
@@ -90,7 +105,7 @@ public class DiceRollingServiceTest {
 
         Investigator investigator = Investigator.builder().name("Alice").strength(3).build();
         List<Investigator> list = List.of(investigator);
-        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength");
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.REGULAR);
 
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
@@ -105,7 +120,7 @@ public class DiceRollingServiceTest {
 
         Investigator investigator = Investigator.builder().name("Alice").strength(50).build();
         List<Investigator> list = List.of(investigator);
-        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength");
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.REGULAR);
 
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
@@ -115,12 +130,57 @@ public class DiceRollingServiceTest {
     }
 
     @Test
+    public void failureWhenRegularSuccessButHardDifficulty() throws Exception {
+        when(diceRollingService.rollDice(any())).thenReturn(40);
+
+        Investigator investigator = Investigator.builder().name("Alice").strength(60).build();
+        List<Investigator> list = List.of(investigator);
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.HARD);
+
+        Assertions.assertEquals(1, resultList.size());
+        EventRollResult result = resultList.get(0);
+        Assertions.assertEquals(RollGradation.FAILURE, result.getGraduation());
+        Assertions.assertEquals(40, result.getValue());
+        Assertions.assertEquals("Alice", result.getInvestigatorName());
+    }
+
+    @Test
+    public void failureWhenRegularSuccessButExtremeDifficulty() throws Exception {
+        when(diceRollingService.rollDice(any())).thenReturn(40);
+
+        Investigator investigator = Investigator.builder().name("Alice").strength(60).build();
+        List<Investigator> list = List.of(investigator);
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.EXTREME);
+
+        Assertions.assertEquals(1, resultList.size());
+        EventRollResult result = resultList.get(0);
+        Assertions.assertEquals(RollGradation.FAILURE, result.getGraduation());
+        Assertions.assertEquals(40, result.getValue());
+        Assertions.assertEquals("Alice", result.getInvestigatorName());
+    }
+
+    @Test
+    public void failureWhenHardSuccessButExtremeDifficulty() throws Exception {
+        when(diceRollingService.rollDice(any())).thenReturn(20);
+
+        Investigator investigator = Investigator.builder().name("Alice").strength(60).build();
+        List<Investigator> list = List.of(investigator);
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.EXTREME);
+
+        Assertions.assertEquals(1, resultList.size());
+        EventRollResult result = resultList.get(0);
+        Assertions.assertEquals(RollGradation.FAILURE, result.getGraduation());
+        Assertions.assertEquals(20, result.getValue());
+        Assertions.assertEquals("Alice", result.getInvestigatorName());
+    }
+
+    @Test
     public void fumbleWhenSkillGreaterOrEqualTo50() throws Exception {
         when(diceRollingService.rollDice(any())).thenReturn(100);
 
         Investigator investigator = Investigator.builder().name("Alice").strength(50).build();
         List<Investigator> list = List.of(investigator);
-        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength");
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.REGULAR);
 
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
@@ -135,12 +195,27 @@ public class DiceRollingServiceTest {
 
         Investigator investigator = Investigator.builder().name("Alice").strength(49).build();
         List<Investigator> list = List.of(investigator);
-        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength");
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.REGULAR);
 
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
         Assertions.assertEquals(RollGradation.FUMBLE, result.getGraduation());
         Assertions.assertEquals(96, result.getValue());
+        Assertions.assertEquals("Alice", result.getInvestigatorName());
+    }
+
+    @Test
+    public void fumbleWhenSkillGreaterThan50ButHardDifficulty() throws Exception {
+        when(diceRollingService.rollDice(any())).thenReturn(98);
+
+        Investigator investigator = Investigator.builder().name("Alice").strength(60).build();
+        List<Investigator> list = List.of(investigator);
+        List<EventRollResult> resultList = diceRollingService.rollTestsAgainstTargetValue(100, list, "strength", RollGradation.HARD);
+
+        Assertions.assertEquals(1, resultList.size());
+        EventRollResult result = resultList.get(0);
+        Assertions.assertEquals(RollGradation.FUMBLE, result.getGraduation());
+        Assertions.assertEquals(98, result.getValue());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
 }
