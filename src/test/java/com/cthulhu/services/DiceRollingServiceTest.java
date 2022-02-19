@@ -35,7 +35,7 @@ public class DiceRollingServiceTest {
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
         Assertions.assertEquals(RollGradation.REGULAR, result.getGradation());
-        Assertions.assertEquals(40, result.getValue());
+        Assertions.assertEquals(40, result.getResult());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
 
@@ -50,7 +50,7 @@ public class DiceRollingServiceTest {
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
         Assertions.assertEquals(RollGradation.REGULAR, result.getGradation());
-        Assertions.assertEquals(40, result.getValue());
+        Assertions.assertEquals(40, result.getResult());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
 
@@ -65,7 +65,7 @@ public class DiceRollingServiceTest {
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
         Assertions.assertEquals(RollGradation.HARD, result.getGradation());
-        Assertions.assertEquals(25, result.getValue());
+        Assertions.assertEquals(25, result.getResult());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
 
@@ -80,7 +80,7 @@ public class DiceRollingServiceTest {
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
         Assertions.assertEquals(RollGradation.EXTREME, result.getGradation());
-        Assertions.assertEquals(10, result.getValue());
+        Assertions.assertEquals(10, result.getResult());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
 
@@ -95,7 +95,7 @@ public class DiceRollingServiceTest {
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
         Assertions.assertEquals(RollGradation.CRITICAL, result.getGradation());
-        Assertions.assertEquals(1, result.getValue());
+        Assertions.assertEquals(1, result.getResult());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
 
@@ -110,7 +110,7 @@ public class DiceRollingServiceTest {
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
         Assertions.assertEquals(RollGradation.CRITICAL, result.getGradation());
-        Assertions.assertEquals(1, result.getValue());
+        Assertions.assertEquals(1, result.getResult());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
 
@@ -125,7 +125,7 @@ public class DiceRollingServiceTest {
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
         Assertions.assertEquals(RollGradation.REGULAR, result.getGradation());
-        Assertions.assertEquals(2, result.getValue());
+        Assertions.assertEquals(2, result.getResult());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
 
@@ -140,7 +140,7 @@ public class DiceRollingServiceTest {
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
         Assertions.assertEquals(RollGradation.FAILURE, result.getGradation());
-        Assertions.assertEquals(60, result.getValue());
+        Assertions.assertEquals(60, result.getResult());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
 
@@ -155,7 +155,7 @@ public class DiceRollingServiceTest {
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
         Assertions.assertEquals(RollGradation.FAILURE, result.getGradation());
-        Assertions.assertEquals(51, result.getValue());
+        Assertions.assertEquals(51, result.getResult());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
 
@@ -170,7 +170,7 @@ public class DiceRollingServiceTest {
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
         Assertions.assertEquals(RollGradation.FAILURE, result.getGradation());
-        Assertions.assertEquals(40, result.getValue());
+        Assertions.assertEquals(40, result.getResult());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
 
@@ -185,7 +185,7 @@ public class DiceRollingServiceTest {
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
         Assertions.assertEquals(RollGradation.FAILURE, result.getGradation());
-        Assertions.assertEquals(40, result.getValue());
+        Assertions.assertEquals(40, result.getResult());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
 
@@ -200,7 +200,7 @@ public class DiceRollingServiceTest {
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
         Assertions.assertEquals(RollGradation.FAILURE, result.getGradation());
-        Assertions.assertEquals(20, result.getValue());
+        Assertions.assertEquals(20, result.getResult());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
 
@@ -215,7 +215,7 @@ public class DiceRollingServiceTest {
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
         Assertions.assertEquals(RollGradation.FUMBLE, result.getGradation());
-        Assertions.assertEquals(100, result.getValue());
+        Assertions.assertEquals(100, result.getResult());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
 
@@ -230,7 +230,7 @@ public class DiceRollingServiceTest {
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
         Assertions.assertEquals(RollGradation.FUMBLE, result.getGradation());
-        Assertions.assertEquals(96, result.getValue());
+        Assertions.assertEquals(96, result.getResult());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
 
@@ -245,7 +245,7 @@ public class DiceRollingServiceTest {
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
         Assertions.assertEquals(RollGradation.FUMBLE, result.getGradation());
-        Assertions.assertEquals(98, result.getValue());
+        Assertions.assertEquals(98, result.getResult());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
 
@@ -260,7 +260,7 @@ public class DiceRollingServiceTest {
         Assertions.assertEquals(1, resultList.size());
         EventRollResult result = resultList.get(0);
         Assertions.assertEquals(RollGradation.FUMBLE, result.getGradation());
-        Assertions.assertEquals(100, result.getValue());
+        Assertions.assertEquals(100, result.getResult());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
     }
 }

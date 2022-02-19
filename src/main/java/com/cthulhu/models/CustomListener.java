@@ -40,7 +40,7 @@ public class CustomListener implements MessageListener {
                             investigatorTargets, event.getTargetSkill(), event.getDifficulty(), event.getBonusDice());
 
                     for(EventRollResult e : rollResults) {
-                        System.out.println("Rolled " + e.getValue() + " from " + event.getDie() + " for " + e.getInvestigatorName() +
+                        System.out.println("Rolled " + e.getResult() + " from " + event.getDie() + " for " + e.getInvestigatorName() +
                                 " with success level of " + e.getGradation() + " at " + queueName);
                     }
                     break;

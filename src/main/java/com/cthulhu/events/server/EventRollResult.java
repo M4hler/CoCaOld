@@ -13,6 +13,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class EventRollResult extends Event {
     private String investigatorName;
-    private int value;
+    private int result;
     private RollGradation gradation;
 }
