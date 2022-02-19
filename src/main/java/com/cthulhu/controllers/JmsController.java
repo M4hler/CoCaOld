@@ -1,6 +1,6 @@
 package com.cthulhu.controllers;
 
-import com.cthulhu.events.EventRoll;
+import com.cthulhu.events.client.EventRoll;
 import com.cthulhu.models.Investigator;
 import com.cthulhu.models.CustomListener;
 import com.cthulhu.services.DiceRollingService;

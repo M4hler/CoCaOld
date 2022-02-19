@@ -1,7 +1,7 @@
 package com.cthulhu.models;
 
-import com.cthulhu.events.EventRoll;
-import com.cthulhu.events.EventRollResult;
+import com.cthulhu.events.client.EventRoll;
+import com.cthulhu.events.server.EventRollResult;
 import com.cthulhu.events.EventType;
 import com.cthulhu.services.DiceRollingService;
 import com.cthulhu.services.InvestigatorService;

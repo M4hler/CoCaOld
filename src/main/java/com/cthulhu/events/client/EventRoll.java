@@ -1,6 +1,7 @@
-package com.cthulhu.events;
+package com.cthulhu.events.client;
 
 import com.cthulhu.enums.RollGradation;
+import com.cthulhu.events.Event;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

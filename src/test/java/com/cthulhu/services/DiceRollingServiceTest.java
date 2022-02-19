@@ -1,7 +1,7 @@
 package com.cthulhu.services;
 
 import com.cthulhu.enums.RollGradation;
-import com.cthulhu.events.EventRollResult;
+import com.cthulhu.events.server.EventRollResult;
 import com.cthulhu.models.Investigator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

@@ -2,6 +2,7 @@ package com.cthulhu.events;
 
 import com.cthulhu.controllers.JmsController;
 import com.cthulhu.enums.RollGradation;
+import com.cthulhu.events.client.EventRoll;
 import com.cthulhu.models.Investigator;
 import com.cthulhu.services.DiceRollingService;
 import com.cthulhu.services.InvestigatorService;
