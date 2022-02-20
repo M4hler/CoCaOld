@@ -1,4 +1,4 @@
-package com.cthulhu.events.server;
+package com.cthulhu.events.client;
 
 import com.cthulhu.enums.RollGradation;
 import com.cthulhu.events.Event;
@@ -11,11 +11,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EventRollResult extends Event {
+public class EventUseLuck extends Event {
     private String investigatorName;
     private int result;
     private RollGradation gradation;
     private String targetSkill;
-    private boolean allowLuck;
-    private boolean allowPush;
 }

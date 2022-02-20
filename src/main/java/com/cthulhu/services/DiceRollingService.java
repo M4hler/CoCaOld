@@ -1,6 +1,7 @@
 package com.cthulhu.services;
 
 import com.cthulhu.enums.RollGradation;
+import com.cthulhu.events.EventType;
 import com.cthulhu.events.server.EventRollResult;
 import com.cthulhu.models.Investigator;
 import org.springframework.stereotype.Service;
@@ -19,14 +20,18 @@ public class DiceRollingService {
     }
 
     public List<EventRollResult> rollTestsAgainstTargetValue(Integer dice, List<Investigator> investigators,
-                                                             String targetSkill, RollGradation difficulty, Integer bonusDice) throws Exception {
+                                                             String targetSkill, RollGradation difficulty,
+                                                             Integer bonusDice, boolean allowLuck, boolean allowPush) throws Exception {
         List<EventRollResult> result = new ArrayList<>();
 
         for(Investigator i : investigators) {
             Object[] rollResult = rollDiceAgainstThreshold(i.getFieldValueByName(targetSkill), difficulty, bonusDice);
             int roll = (int)rollResult[0];
             RollGradation gradation = (RollGradation)rollResult[1];
-            result.add(new EventRollResult(i.getName(), roll, gradation));
+            EventRollResult eventRollResult = new EventRollResult(i.getName(), roll, gradation, targetSkill, allowLuck, allowPush);
+            eventRollResult.setTargetQueue(i.getName());
+            eventRollResult.setEventType(EventType.ROLLRESULT);
+            result.add(eventRollResult);
         }
 
         return result;

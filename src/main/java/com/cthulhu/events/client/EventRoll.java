@@ -19,4 +19,6 @@ public class EventRoll extends Event {
     private String targetSkill;
     private RollGradation difficulty;
     private Integer bonusDice;
+    private boolean allowLuck;
+    private boolean allowPush;
 }

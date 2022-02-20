@@ -1,6 +1,7 @@
 package com.cthulhu.models;
 
 import com.cthulhu.events.client.EventRoll;
+import com.cthulhu.events.client.EventUseLuck;
 import com.cthulhu.events.server.EventRollResult;
 import com.cthulhu.events.EventType;
 import com.cthulhu.services.DiceRollingService;
@@ -33,17 +34,25 @@ public class CustomListener implements MessageListener {
             EventType type = EventType.valueOf(json.getString("eventType"));
 
             switch(type) {
-                case ROLL:
+                case ROLL: {
                     EventRoll event = objectMapper.readValue(messageBody, EventRoll.class);
                     List<Investigator> investigatorTargets = investigatorService.getInvestigatorsWithNames(event.getInvestigatorTargets());
                     List<EventRollResult> rollResults = diceRollingService.rollTestsAgainstTargetValue(event.getDie(),
-                            investigatorTargets, event.getTargetSkill(), event.getDifficulty(), event.getBonusDice());
+                            investigatorTargets, event.getTargetSkill(), event.getDifficulty(), event.getBonusDice(),
+                            event.isAllowLuck(), event.isAllowPush());
 
                     for(EventRollResult e : rollResults) {
                         System.out.println("Rolled " + e.getResult() + " from " + event.getDie() + " for " + e.getInvestigatorName() +
                                 " with success level of " + e.getGradation() + " at " + queueName);
                     }
                     break;
+                }
+
+                case USELUCK: {
+                    EventUseLuck event = objectMapper.readValue(messageBody, EventUseLuck.class);
+                    //TODO create service to use luck
+                    break;
+                }
             }
         }
         catch (Exception e) {
