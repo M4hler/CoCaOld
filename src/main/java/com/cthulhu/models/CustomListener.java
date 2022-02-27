@@ -4,8 +4,10 @@ import com.cthulhu.events.client.EventRoll;
 import com.cthulhu.events.client.EventUseLuck;
 import com.cthulhu.events.server.EventRollResult;
 import com.cthulhu.events.EventType;
+import com.cthulhu.events.server.EventUseLuckResult;
 import com.cthulhu.services.DiceRollingService;
 import com.cthulhu.services.InvestigatorService;
+import com.cthulhu.services.LuckService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 
@@ -18,12 +20,14 @@ public class CustomListener implements MessageListener {
     private final ObjectMapper objectMapper;
     private final DiceRollingService diceRollingService;
     private final InvestigatorService investigatorService;
+    private final LuckService luckService;
 
-    public CustomListener(String queueName, DiceRollingService diceRollingService, InvestigatorService investigatorService) {
+    public CustomListener(String queueName, DiceRollingService diceRollingService, InvestigatorService investigatorService, LuckService luckService) {
         this.queueName = queueName;
         objectMapper = new ObjectMapper();
         this.diceRollingService = diceRollingService;
         this.investigatorService = investigatorService;
+        this.luckService = luckService;
     }
 
     @Override
@@ -34,7 +38,7 @@ public class CustomListener implements MessageListener {
             EventType type = EventType.valueOf(json.getString("eventType"));
 
             switch(type) {
-                case ROLL: {
+                case ROLL -> {
                     EventRoll event = objectMapper.readValue(messageBody, EventRoll.class);
                     List<Investigator> investigatorTargets = investigatorService.getInvestigatorsWithNames(event.getInvestigatorTargets());
                     List<EventRollResult> rollResults = diceRollingService.rollTestsAgainstTargetValue(event.getDie(),
@@ -45,13 +49,14 @@ public class CustomListener implements MessageListener {
                         System.out.println("Rolled " + e.getResult() + " from " + event.getDie() + " for " + e.getInvestigatorName() +
                                 " with success level of " + e.getGradation() + " at " + queueName);
                     }
-                    break;
                 }
-
-                case USELUCK: {
+                case USELUCK -> {
                     EventUseLuck event = objectMapper.readValue(messageBody, EventUseLuck.class);
-                    //TODO create service to use luck
-                    break;
+                    Investigator investigator = investigatorService.getInvestigatorByName(event.getInvestigatorName());
+                    EventUseLuckResult eventResult = luckService.useLuck(investigator, event.getResult(), event.getGradation(), event.getTargetSkill());
+
+                    System.out.println("Investigator " + eventResult.getInvestigatorName() + " used " + eventResult.getLuckUsed() +
+                            "for skill " + eventResult.getTargetSkill() + " to achieve " + eventResult.getAchievedGradation());
                 }
             }
         }

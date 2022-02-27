@@ -26,6 +26,8 @@ public class Investigator {
     private int power;
     private int education;
 
+    private int luck;
+
     public int getFieldValueByName(String name) throws Exception {
         return (int)PropertyUtils.getProperty(this, name);
     }

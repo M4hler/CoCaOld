@@ -5,6 +5,7 @@ import com.cthulhu.models.Investigator;
 import com.cthulhu.models.CustomListener;
 import com.cthulhu.services.DiceRollingService;
 import com.cthulhu.services.InvestigatorService;
+import com.cthulhu.services.LuckService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,8 @@ public class JmsController {
     private DiceRollingService diceRollingService;
     @Autowired
     private InvestigatorService investigatorService;
+    @Autowired
+    private LuckService luckService;
 
     @GetMapping("/get")
     public void simpleGet() {
@@ -32,7 +35,7 @@ public class JmsController {
         Session session = connectionFactory.createConnection().createSession(false, Session.AUTO_ACKNOWLEDGE);
         Queue queue = session.createQueue(name);
         MessageConsumer consumer = session.createConsumer(queue);
-        consumer.setMessageListener(new CustomListener(name, diceRollingService, investigatorService));
+        consumer.setMessageListener(new CustomListener(name, diceRollingService, investigatorService, luckService));
     }
 
     @PostMapping("/sendToQueue")
