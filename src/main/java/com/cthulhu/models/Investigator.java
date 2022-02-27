@@ -5,6 +5,8 @@ import org.apache.commons.beanutils.PropertyUtils;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Transient;
+import java.util.List;
 
 @Entity
 @Getter
@@ -28,7 +30,22 @@ public class Investigator {
 
     private int luck;
 
+    private int accounting;
+
+    @Transient
+    private List<String> successfullyUsedSkills;
+    private static List<String> cantBeDeveloped = setCantBeDeveloped();
+
     public int getFieldValueByName(String name) throws Exception {
         return (int)PropertyUtils.getProperty(this, name);
+    }
+
+    public boolean ableToDevelop(String skill) {
+        return !cantBeDeveloped.contains(skill);
+    }
+
+    private static List<String> setCantBeDeveloped() {
+        return List.of("strength", "constitution", "size", "dexterity", "appearance", "intelligence", "power", "education",
+                "sanity", "creditRating", "cthulhuMythos");
     }
 }

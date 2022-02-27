@@ -15,4 +15,16 @@ public class InvestigatorTest {
         Assertions.assertEquals(70, investigator.getFieldValueByName("strength"));
         Assertions.assertEquals(50, investigator.getFieldValueByName("constitution"));
     }
+
+    @Test
+    public void cantDevelopSkill() {
+        Investigator investigator = new Investigator();
+        Assertions.assertFalse(investigator.ableToDevelop("strength"));
+    }
+
+    @Test
+    public void canDevelopSkill() {
+        Investigator investigator = new Investigator();
+        Assertions.assertTrue(investigator.ableToDevelop("archeology"));
+    }
 }
