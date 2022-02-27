@@ -40,7 +40,7 @@ public class LuckService {
         eventResult.setInvestigatorName(investigator.getName());
         eventResult.setTargetSkill(targetSkill);
         eventResult.setTargetQueue(investigator.getName());
-        eventResult.setEventType(EventType.USELUCKRESULT);
+        eventResult.setEventType(EventType.USE_LUCK_RESULT);
         return eventResult;
     }
 }

@@ -1,5 +1,5 @@
 package com.cthulhu.events;
 
 public enum EventType {
-    ROLL, ROLLRESULT, USELUCK, USELUCKRESULT
+    ROLL, ROLL_RESULT, USE_LUCK, USE_LUCK_RESULT
 }

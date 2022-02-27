@@ -1,10 +1,11 @@
-package com.cthulhu.models;
+package com.cthulhu.listeners;
 
 import com.cthulhu.events.client.EventRoll;
 import com.cthulhu.events.client.EventUseLuck;
 import com.cthulhu.events.server.EventRollResult;
 import com.cthulhu.events.EventType;
 import com.cthulhu.events.server.EventUseLuckResult;
+import com.cthulhu.models.Investigator;
 import com.cthulhu.services.DiceRollingService;
 import com.cthulhu.services.InvestigatorService;
 import com.cthulhu.services.LuckService;
@@ -50,7 +51,7 @@ public class CustomListener implements MessageListener {
                                 " with success level of " + e.getGradation() + " at " + queueName);
                     }
                 }
-                case USELUCK -> {
+                case USE_LUCK -> {
                     EventUseLuck event = objectMapper.readValue(messageBody, EventUseLuck.class);
                     Investigator investigator = investigatorService.getInvestigatorByName(event.getInvestigatorName());
                     EventUseLuckResult eventResult = luckService.useLuck(investigator, event.getResult(), event.getGradation(), event.getTargetSkill());

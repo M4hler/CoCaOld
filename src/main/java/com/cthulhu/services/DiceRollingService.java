@@ -30,7 +30,7 @@ public class DiceRollingService {
             RollGradation gradation = (RollGradation)rollResult[1];
             EventRollResult eventRollResult = new EventRollResult(i.getName(), roll, gradation, targetSkill, allowLuck, allowPush);
             eventRollResult.setTargetQueue(i.getName());
-            eventRollResult.setEventType(EventType.ROLLRESULT);
+            eventRollResult.setEventType(EventType.ROLL_RESULT);
             result.add(eventRollResult);
         }
 

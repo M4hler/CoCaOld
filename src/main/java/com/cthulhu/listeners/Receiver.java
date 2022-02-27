@@ -1,4 +1,4 @@
-package com.cthulhu.services;
+package com.cthulhu.listeners;
 
 import com.cthulhu.models.Investigator;
 import org.springframework.jms.annotation.JmsListener;
