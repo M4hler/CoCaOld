@@ -5,7 +5,6 @@ import com.cthulhu.repositories.InvestigatorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -33,5 +32,15 @@ public class InvestigatorService {
 
     public void deleteAll() {
         investigatorRepository.deleteAll();
+    }
+
+    public void addToSuccessfullyUsedSkills(Investigator investigator, String skill) {
+        if(!investigator.ableToDevelop(skill)) {
+            return;
+        }
+
+        List<String> skills = investigator.getSuccessfullyUsedSkills();
+        skills.add(skill);
+        investigator.setSuccessfullyUsedSkills(skills);
     }
 }

@@ -40,6 +40,10 @@ public class Investigator {
         return (int)PropertyUtils.getProperty(this, name);
     }
 
+    public void setFieldValueByName(String name, int value) throws Exception {
+        PropertyUtils.setProperty(this, name, value);
+    }
+
     public boolean ableToDevelop(String skill) {
         return !cantBeDeveloped.contains(skill);
     }

@@ -1,7 +1,9 @@
 package com.cthulhu.listeners;
 
+import com.cthulhu.events.client.EventDevelop;
 import com.cthulhu.events.client.EventRoll;
 import com.cthulhu.events.client.EventUseLuck;
+import com.cthulhu.events.server.EventDevelopResult;
 import com.cthulhu.events.server.EventRollResult;
 import com.cthulhu.events.EventType;
 import com.cthulhu.events.server.EventUseLuckResult;
@@ -57,7 +59,15 @@ public class CustomListener implements MessageListener {
                     EventUseLuckResult eventResult = luckService.useLuck(investigator, event.getResult(), event.getGradation(), event.getTargetSkill());
 
                     System.out.println("Investigator " + eventResult.getInvestigatorName() + " used " + eventResult.getLuckUsed() +
-                            "for skill " + eventResult.getTargetSkill() + " to achieve " + eventResult.getAchievedGradation());
+                            " for skill " + eventResult.getTargetSkill() + " to achieve " + eventResult.getAchievedGradation());
+                }
+                case DEVELOP -> {
+                    EventDevelop event = objectMapper.readValue(messageBody, EventDevelop.class);
+                    Investigator investigator = investigatorService.getInvestigatorByName(event.getInvestigatorName());
+                    EventDevelopResult eventResult = diceRollingService.rollDevelopTest(investigator, event.getTargetSkill());
+
+                    System.out.println("Investigator " + eventResult.getInvestigatorName() + " got " + eventResult.getRollResult() +
+                            " on develop roll for skill " + eventResult.getTargetSkill() + " and gained " + eventResult.getSkillGain());
                 }
             }
         }

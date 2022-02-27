@@ -1,33 +1,32 @@
 package com.cthulhu.services;
 
 import com.cthulhu.enums.RollGradation;
+import com.cthulhu.events.server.EventDevelopResult;
 import com.cthulhu.events.server.EventRollResult;
 import com.cthulhu.models.Investigator;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class DiceRollingServiceTest {
     @MockBean
+    private GeneratorService generatorService;
+    @Autowired
     private DiceRollingService diceRollingService;
-
-    @BeforeEach
-    public void beforeEach() throws Exception {
-        when(diceRollingService.rollTestsAgainstTargetValue(any(), any(), any(), any(), any(), anyBoolean(), anyBoolean())).thenCallRealMethod();
-    }
+    @Autowired
+    private InvestigatorService investigatorService;
 
     @Test
     public void regularSuccess() throws Exception {
-        when(diceRollingService.rollDice(any())).thenReturn(40);
+        when(generatorService.rollDice(any())).thenReturn(40);
 
         Investigator investigator = Investigator.builder().name("Alice").strength(50).build();
         List<Investigator> list = List.of(investigator);
@@ -42,7 +41,7 @@ public class DiceRollingServiceTest {
 
     @Test
     public void regularSuccessWithBonusDie() throws Exception {
-        when(diceRollingService.rollDice(any())).thenReturn(10).thenReturn(6).thenReturn(4);
+        when(generatorService.rollDice(any())).thenReturn(10).thenReturn(6).thenReturn(4);
 
         Investigator investigator = Investigator.builder().name("Alice").strength(50).build();
         List<Investigator> list = List.of(investigator);
@@ -57,7 +56,7 @@ public class DiceRollingServiceTest {
 
     @Test
     public void hardSuccess() throws Exception {
-        when(diceRollingService.rollDice(any())).thenReturn(25);
+        when(generatorService.rollDice(any())).thenReturn(25);
 
         Investigator investigator = Investigator.builder().name("Alice").strength(50).build();
         List<Investigator> list = List.of(investigator);
@@ -72,7 +71,7 @@ public class DiceRollingServiceTest {
 
     @Test
     public void extremeSuccess() throws Exception {
-        when(diceRollingService.rollDice(any())).thenReturn(10);
+        when(generatorService.rollDice(any())).thenReturn(10);
 
         Investigator investigator = Investigator.builder().name("Alice").strength(50).build();
         List<Investigator> list = List.of(investigator);
@@ -87,7 +86,7 @@ public class DiceRollingServiceTest {
 
     @Test
     public void criticalSuccess() throws Exception {
-        when(diceRollingService.rollDice(any())).thenReturn(1);
+        when(generatorService.rollDice(any())).thenReturn(1);
 
         Investigator investigator = Investigator.builder().name("Alice").strength(50).build();
         List<Investigator> list = List.of(investigator);
@@ -102,7 +101,7 @@ public class DiceRollingServiceTest {
 
     @Test
     public void criticalSuccessButExtremeDifficulty() throws Exception {
-        when(diceRollingService.rollDice(any())).thenReturn(1);
+        when(generatorService.rollDice(any())).thenReturn(1);
 
         Investigator investigator = Investigator.builder().name("Alice").strength(4).build();
         List<Investigator> list = List.of(investigator);
@@ -117,7 +116,7 @@ public class DiceRollingServiceTest {
 
     @Test
     public void regularSuccessAtLowValue() throws Exception {
-        when(diceRollingService.rollDice(any())).thenReturn(2);
+        when(generatorService.rollDice(any())).thenReturn(2);
 
         Investigator investigator = Investigator.builder().name("Alice").strength(3).build();
         List<Investigator> list = List.of(investigator);
@@ -132,7 +131,7 @@ public class DiceRollingServiceTest {
 
     @Test
     public void failure() throws Exception {
-        when(diceRollingService.rollDice(any())).thenReturn(60);
+        when(generatorService.rollDice(any())).thenReturn(60);
 
         Investigator investigator = Investigator.builder().name("Alice").strength(50).build();
         List<Investigator> list = List.of(investigator);
@@ -147,7 +146,7 @@ public class DiceRollingServiceTest {
 
     @Test
     public void failureWithPenaltyDie() throws Exception {
-        when(diceRollingService.rollDice(any())).thenReturn(1).thenReturn(2).thenReturn(5);
+        when(generatorService.rollDice(any())).thenReturn(1).thenReturn(2).thenReturn(5);
 
         Investigator investigator = Investigator.builder().name("Alice").strength(50).build();
         List<Investigator> list = List.of(investigator);
@@ -162,7 +161,7 @@ public class DiceRollingServiceTest {
 
     @Test
     public void failureWhenRegularSuccessButHardDifficulty() throws Exception {
-        when(diceRollingService.rollDice(any())).thenReturn(40);
+        when(generatorService.rollDice(any())).thenReturn(40);
 
         Investigator investigator = Investigator.builder().name("Alice").strength(60).build();
         List<Investigator> list = List.of(investigator);
@@ -177,7 +176,7 @@ public class DiceRollingServiceTest {
 
     @Test
     public void failureWhenRegularSuccessButExtremeDifficulty() throws Exception {
-        when(diceRollingService.rollDice(any())).thenReturn(40);
+        when(generatorService.rollDice(any())).thenReturn(40);
 
         Investigator investigator = Investigator.builder().name("Alice").strength(60).build();
         List<Investigator> list = List.of(investigator);
@@ -192,7 +191,7 @@ public class DiceRollingServiceTest {
 
     @Test
     public void failureWhenHardSuccessButExtremeDifficulty() throws Exception {
-        when(diceRollingService.rollDice(any())).thenReturn(20);
+        when(generatorService.rollDice(any())).thenReturn(20);
 
         Investigator investigator = Investigator.builder().name("Alice").strength(60).build();
         List<Investigator> list = List.of(investigator);
@@ -207,7 +206,7 @@ public class DiceRollingServiceTest {
 
     @Test
     public void fumbleWhenSkillGreaterOrEqualTo50() throws Exception {
-        when(diceRollingService.rollDice(any())).thenReturn(100);
+        when(generatorService.rollDice(any())).thenReturn(100);
 
         Investigator investigator = Investigator.builder().name("Alice").strength(50).build();
         List<Investigator> list = List.of(investigator);
@@ -222,7 +221,7 @@ public class DiceRollingServiceTest {
 
     @Test
     public void fumbleWhenSkillLowerThan50() throws Exception {
-        when(diceRollingService.rollDice(any())).thenReturn(96);
+        when(generatorService.rollDice(any())).thenReturn(96);
 
         Investigator investigator = Investigator.builder().name("Alice").strength(49).build();
         List<Investigator> list = List.of(investigator);
@@ -237,7 +236,7 @@ public class DiceRollingServiceTest {
 
     @Test
     public void fumbleWhenSkillGreaterThan50ButHardDifficulty() throws Exception {
-        when(diceRollingService.rollDice(any())).thenReturn(98);
+        when(generatorService.rollDice(any())).thenReturn(98);
 
         Investigator investigator = Investigator.builder().name("Alice").strength(60).build();
         List<Investigator> list = List.of(investigator);
@@ -252,7 +251,7 @@ public class DiceRollingServiceTest {
 
     @Test
     public void fumbleWithPenaltyDie() throws Exception {
-        when(diceRollingService.rollDice(any())).thenReturn(0).thenReturn(1).thenReturn(10);
+        when(generatorService.rollDice(any())).thenReturn(0).thenReturn(1).thenReturn(10);
 
         Investigator investigator = Investigator.builder().name("Alice").strength(50).build();
         List<Investigator> list = List.of(investigator);
@@ -263,5 +262,20 @@ public class DiceRollingServiceTest {
         Assertions.assertEquals(RollGradation.FUMBLE, result.getGradation());
         Assertions.assertEquals(100, result.getResult());
         Assertions.assertEquals("Alice", result.getInvestigatorName());
+    }
+
+    @Test
+    public void standardDevelopTest() throws Exception {
+        when(generatorService.rollDice(any())).thenReturn(50).thenReturn(3);
+
+        Investigator investigator = Investigator.builder().name("Alice").accounting(40).build();
+        EventDevelopResult eventResult = diceRollingService.rollDevelopTest(investigator, "accounting");
+        Assertions.assertEquals(50, eventResult.getRollResult());
+        Assertions.assertEquals(3, eventResult.getSkillGain());
+        Assertions.assertEquals("accounting", eventResult.getTargetSkill());
+        Assertions.assertEquals("Alice", eventResult.getInvestigatorName());
+
+        Investigator i = investigatorService.getInvestigatorByName("Alice");
+        Assertions.assertEquals(43, i.getAccounting());
     }
 }
