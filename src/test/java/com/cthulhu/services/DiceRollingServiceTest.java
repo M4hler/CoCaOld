@@ -265,10 +265,12 @@ public class DiceRollingServiceTest {
     }
 
     @Test
-    public void standardDevelopTest() throws Exception {
+    public void developTest() throws Exception {
         when(generatorService.rollDice(any())).thenReturn(50).thenReturn(3);
 
         Investigator investigator = Investigator.builder().name("Alice").accounting(40).build();
+        investigatorService.saveInvestigator(investigator);
+
         EventDevelopResult eventResult = diceRollingService.rollDevelopTest(investigator, "accounting");
         Assertions.assertEquals(50, eventResult.getRollResult());
         Assertions.assertEquals(3, eventResult.getSkillGain());
@@ -277,5 +279,39 @@ public class DiceRollingServiceTest {
 
         Investigator i = investigatorService.getInvestigatorByName("Alice");
         Assertions.assertEquals(43, i.getAccounting());
+    }
+
+    @Test
+    public void developTestWithHighSkill() throws Exception {
+        when(generatorService.rollDice(any())).thenReturn(99).thenReturn(3);
+
+        Investigator investigator = Investigator.builder().name("Alice").accounting(96).build();
+        investigatorService.saveInvestigator(investigator);
+
+        EventDevelopResult eventResult = diceRollingService.rollDevelopTest(investigator, "accounting");
+        Assertions.assertEquals(99, eventResult.getRollResult());
+        Assertions.assertEquals(3, eventResult.getSkillGain());
+        Assertions.assertEquals("accounting", eventResult.getTargetSkill());
+        Assertions.assertEquals("Alice", eventResult.getInvestigatorName());
+
+        Investigator i = investigatorService.getInvestigatorByName("Alice");
+        Assertions.assertEquals(99, i.getAccounting());
+    }
+
+    @Test
+    public void developTestFail() throws Exception {
+        when(generatorService.rollDice(any())).thenReturn(40);
+
+        Investigator investigator = Investigator.builder().name("Alice").accounting(40).build();
+        investigatorService.saveInvestigator(investigator);
+
+        EventDevelopResult eventResult = diceRollingService.rollDevelopTest(investigator, "accounting");
+        Assertions.assertEquals(40, eventResult.getRollResult());
+        Assertions.assertEquals(0, eventResult.getSkillGain());
+        Assertions.assertEquals("accounting", eventResult.getTargetSkill());
+        Assertions.assertEquals("Alice", eventResult.getInvestigatorName());
+
+        Investigator i = investigatorService.getInvestigatorByName("Alice");
+        Assertions.assertEquals(40, i.getAccounting());
     }
 }
