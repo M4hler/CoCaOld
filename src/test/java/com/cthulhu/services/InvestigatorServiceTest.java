@@ -47,4 +47,61 @@ public class InvestigatorServiceTest {
 
         investigatorService.deleteAll();
     }
+
+    @Test
+    public void tryAddingWrongSkill() {
+        Investigator investigator = Investigator.builder().build();
+        investigatorService.addToSuccessfullyUsedSkills(investigator, "strength");
+
+        Assertions.assertNull(investigator.getSuccessfullyUsedSkills());
+    }
+
+    @Test
+    public void addToSuccessfullyUsedSkills() {
+        Investigator investigator = Investigator.builder().build();
+        Assertions.assertNull(investigator.getSuccessfullyUsedSkills());
+
+        investigatorService.addToSuccessfullyUsedSkills(investigator, "accounting");
+        Assertions.assertEquals(1, investigator.getSuccessfullyUsedSkills().size());
+        Assertions.assertEquals(1, investigator.getSuccessfullyUsedSkills().get("accounting"));
+    }
+
+    @Test
+    public void sameSkillUsedSuccessfullyTwice() {
+        Investigator investigator = Investigator.builder().build();
+        investigatorService.addToSuccessfullyUsedSkills(investigator, "accounting");
+        investigatorService.addToSuccessfullyUsedSkills(investigator, "accounting");
+
+
+        Assertions.assertEquals(1, investigator.getSuccessfullyUsedSkills().size());
+        Assertions.assertEquals(2, investigator.getSuccessfullyUsedSkills().get("accounting"));
+    }
+
+    @Test
+    public void multipleSkillsUsedSuccessfully() {
+        Investigator investigator = Investigator.builder().build();
+        investigatorService.addToSuccessfullyUsedSkills(investigator, "accounting");
+        investigatorService.addToSuccessfullyUsedSkills(investigator, "history");
+        investigatorService.addToSuccessfullyUsedSkills(investigator, "accounting");
+
+
+        Assertions.assertEquals(2, investigator.getSuccessfullyUsedSkills().size());
+        Assertions.assertEquals(2, investigator.getSuccessfullyUsedSkills().get("accounting"));
+        Assertions.assertEquals(1, investigator.getSuccessfullyUsedSkills().get("history"));
+    }
+
+    @Test
+    public void reduceNumberOfSuccessfulAttempts() {
+        Investigator investigator = Investigator.builder().build();
+        investigatorService.addToSuccessfullyUsedSkills(investigator, "accounting");
+        investigatorService.addToSuccessfullyUsedSkills(investigator, "accounting");
+
+
+        Assertions.assertEquals(1, investigator.getSuccessfullyUsedSkills().size());
+        Assertions.assertEquals(2, investigator.getSuccessfullyUsedSkills().get("accounting"));
+
+        investigatorService.reduceSuccessfullyUsedSkill(investigator, "accounting");
+        Assertions.assertEquals(1, investigator.getSuccessfullyUsedSkills().size());
+        Assertions.assertEquals(1, investigator.getSuccessfullyUsedSkills().get("accounting"));
+    }
 }

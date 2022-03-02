@@ -5,7 +5,9 @@ import com.cthulhu.repositories.InvestigatorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class InvestigatorService {
@@ -39,8 +41,18 @@ public class InvestigatorService {
             return;
         }
 
-        List<String> skills = investigator.getSuccessfullyUsedSkills();
-        skills.add(skill);
+        Map<String, Integer> skills = investigator.getSuccessfullyUsedSkills();
+        if(skills == null) {
+            skills = new HashMap<>();
+        }
+
+        skills.merge(skill, 1, Integer::sum);
+        investigator.setSuccessfullyUsedSkills(skills);
+    }
+
+    public void reduceSuccessfullyUsedSkill(Investigator investigator, String skill) {
+        Map<String, Integer> skills = investigator.getSuccessfullyUsedSkills();
+        skills.put(skill, skills.get(skill) - 1);
         investigator.setSuccessfullyUsedSkills(skills);
     }
 }

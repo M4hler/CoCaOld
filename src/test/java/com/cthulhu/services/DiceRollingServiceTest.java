@@ -2,6 +2,7 @@ package com.cthulhu.services;
 
 import com.cthulhu.enums.RollGradation;
 import com.cthulhu.events.server.EventDevelopResult;
+import com.cthulhu.events.server.EventPushResult;
 import com.cthulhu.events.server.EventRollResult;
 import com.cthulhu.models.Investigator;
 import org.junit.jupiter.api.Assertions;
@@ -313,5 +314,67 @@ public class DiceRollingServiceTest {
 
         Investigator i = investigatorService.getInvestigatorByName("Alice");
         Assertions.assertEquals(40, i.getAccounting());
+    }
+
+    @Test
+    public void pushTestPrevSuccessNowSuccess() throws Exception {
+        when(generatorService.rollDice(any())).thenReturn(40);
+        Investigator investigator = Investigator.builder().name("Alice").accounting(40).build();
+        investigatorService.saveInvestigator(investigator);
+        List<Investigator> list = List.of(investigator);
+        diceRollingService.rollTestsAgainstTargetValue(100, list, "accounting", RollGradation.REGULAR, 0, false, false);
+
+        Assertions.assertEquals(1, investigator.getSuccessfullyUsedSkills().size());
+        Assertions.assertEquals(1, investigator.getSuccessfullyUsedSkills().get("accounting"));
+
+        EventPushResult eventResult = diceRollingService.rollPushTest(investigator, RollGradation.REGULAR, RollGradation.REGULAR, "accounting");
+        Assertions.assertEquals(1, investigator.getSuccessfullyUsedSkills().size());
+        Assertions.assertEquals(1, investigator.getSuccessfullyUsedSkills().get("accounting"));
+        Assertions.assertEquals(40, eventResult.getRoll());
+        Assertions.assertEquals(RollGradation.REGULAR, eventResult.getPreviousGradation());
+        Assertions.assertEquals(RollGradation.REGULAR, eventResult.getAchievedGradation());
+        Assertions.assertEquals("accounting", eventResult.getTargetSkill());
+        Assertions.assertEquals("Alice", eventResult.getInvestigatorName());
+    }
+
+    @Test
+    public void pushTestPrevFailureNowSuccess() throws Exception {
+        when(generatorService.rollDice(any())).thenReturn(50).thenReturn(40);
+        Investigator investigator = Investigator.builder().name("Alice").accounting(40).build();
+        investigatorService.saveInvestigator(investigator);
+        List<Investigator> list = List.of(investigator);
+        diceRollingService.rollTestsAgainstTargetValue(100, list, "accounting", RollGradation.REGULAR, 0, false, false);
+
+        Assertions.assertNull(investigator.getSuccessfullyUsedSkills());
+
+        EventPushResult eventResult = diceRollingService.rollPushTest(investigator, RollGradation.FAILURE, RollGradation.REGULAR, "accounting");
+        Assertions.assertEquals(1, investigator.getSuccessfullyUsedSkills().size());
+        Assertions.assertEquals(1, investigator.getSuccessfullyUsedSkills().get("accounting"));
+        Assertions.assertEquals(40, eventResult.getRoll());
+        Assertions.assertEquals(RollGradation.FAILURE, eventResult.getPreviousGradation());
+        Assertions.assertEquals(RollGradation.REGULAR, eventResult.getAchievedGradation());
+        Assertions.assertEquals("accounting", eventResult.getTargetSkill());
+        Assertions.assertEquals("Alice", eventResult.getInvestigatorName());
+    }
+
+    @Test
+    public void pushTestPrevSuccessNowFail() throws Exception {
+        when(generatorService.rollDice(any())).thenReturn(40).thenReturn(50);
+        Investigator investigator = Investigator.builder().name("Alice").accounting(40).build();
+        investigatorService.saveInvestigator(investigator);
+        List<Investigator> list = List.of(investigator);
+        diceRollingService.rollTestsAgainstTargetValue(100, list, "accounting", RollGradation.REGULAR, 0, false, false);
+
+        Assertions.assertEquals(1, investigator.getSuccessfullyUsedSkills().size());
+        Assertions.assertEquals(1, investigator.getSuccessfullyUsedSkills().get("accounting"));
+
+        EventPushResult eventResult = diceRollingService.rollPushTest(investigator, RollGradation.REGULAR, RollGradation.REGULAR, "accounting");
+        Assertions.assertEquals(1, investigator.getSuccessfullyUsedSkills().size());
+        Assertions.assertEquals(0, investigator.getSuccessfullyUsedSkills().get("accounting"));
+        Assertions.assertEquals(50, eventResult.getRoll());
+        Assertions.assertEquals(RollGradation.REGULAR, eventResult.getPreviousGradation());
+        Assertions.assertEquals(RollGradation.FAILURE, eventResult.getAchievedGradation());
+        Assertions.assertEquals("accounting", eventResult.getTargetSkill());
+        Assertions.assertEquals("Alice", eventResult.getInvestigatorName());
     }
 }

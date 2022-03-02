@@ -3,6 +3,7 @@ package com.cthulhu.services;
 import com.cthulhu.enums.RollGradation;
 import com.cthulhu.events.EventType;
 import com.cthulhu.events.server.EventDevelopResult;
+import com.cthulhu.events.server.EventPushResult;
 import com.cthulhu.events.server.EventRollResult;
 import com.cthulhu.models.Investigator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +34,6 @@ public class DiceRollingService {
             int roll = (int)rollResult[0];
             RollGradation gradation = (RollGradation)rollResult[1];
 
-            //TODO decide what to do when roll is a success but player pushed to achieve better gradation and failed,
-            //TODO it should probably not be considered as successful roll for sake of development
             if(gradation == RollGradation.REGULAR || gradation == RollGradation.HARD ||
                     gradation == RollGradation.EXTREME || gradation == RollGradation.CRITICAL) {
                 investigatorService.addToSuccessfullyUsedSkills(i, targetSkill);
@@ -47,6 +46,29 @@ public class DiceRollingService {
         }
 
         return result;
+    }
+
+    public EventPushResult rollPushTest(Investigator investigator, RollGradation previousGradation, RollGradation currentGradation,
+                                        String targetSkill) throws Exception {
+        Object[] rollResult = rollDiceAgainstThreshold(investigator.getFieldValueByName(targetSkill), currentGradation, 0);
+        int roll = (int)rollResult[0];
+        RollGradation gradation = (RollGradation)rollResult[1];
+
+        if(previousGradation == RollGradation.FAILURE &&
+                (gradation == RollGradation.REGULAR || gradation == RollGradation.HARD ||
+                gradation == RollGradation.EXTREME || gradation == RollGradation.CRITICAL)) {
+            investigatorService.addToSuccessfullyUsedSkills(investigator, targetSkill);
+        }
+        else if((gradation == RollGradation.FAILURE || gradation == RollGradation.FUMBLE) &&
+                    (previousGradation == RollGradation.REGULAR || previousGradation == RollGradation.HARD ||
+                            previousGradation == RollGradation.EXTREME || previousGradation == RollGradation.CRITICAL)) {
+            investigatorService.reduceSuccessfullyUsedSkill(investigator, targetSkill);
+        }
+
+        EventPushResult eventPushResult = new EventPushResult(investigator.getName(), roll, previousGradation, gradation, targetSkill);
+        eventPushResult.setTargetQueue(investigator.getName());
+        eventPushResult.setEventType(EventType.PUSH_RESULT);
+        return eventPushResult;
     }
 
     public EventDevelopResult rollDevelopTest(Investigator investigator, String targetSkill) throws Exception {

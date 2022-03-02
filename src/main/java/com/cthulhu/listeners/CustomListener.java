@@ -1,9 +1,11 @@
 package com.cthulhu.listeners;
 
 import com.cthulhu.events.client.EventDevelop;
+import com.cthulhu.events.client.EventPush;
 import com.cthulhu.events.client.EventRoll;
 import com.cthulhu.events.client.EventUseLuck;
 import com.cthulhu.events.server.EventDevelopResult;
+import com.cthulhu.events.server.EventPushResult;
 import com.cthulhu.events.server.EventRollResult;
 import com.cthulhu.events.EventType;
 import com.cthulhu.events.server.EventUseLuckResult;
@@ -68,6 +70,16 @@ public class CustomListener implements MessageListener {
 
                     System.out.println("Investigator " + eventResult.getInvestigatorName() + " got " + eventResult.getRollResult() +
                             " on develop roll for skill " + eventResult.getTargetSkill() + " and gained " + eventResult.getSkillGain());
+                }
+                case PUSH -> {
+                    EventPush event = objectMapper.readValue(messageBody, EventPush.class);
+                    Investigator investigator = investigatorService.getInvestigatorByName(event.getInvestigatorName());
+                    EventPushResult eventResult = diceRollingService.rollPushTest(investigator, event.getPreviousGradation(),
+                            event.getCurrentGradation(), event.getTargetSkill());
+
+                    System.out.println("Investigator " + eventResult.getInvestigatorName() + " got " + eventResult.getRoll() +
+                            " on push roll for skill " + eventResult.getTargetSkill() + " with previously achieved gradation of " +
+                            eventResult.getPreviousGradation() + " and currently achieved " + eventResult.getAchievedGradation());
                 }
             }
         }

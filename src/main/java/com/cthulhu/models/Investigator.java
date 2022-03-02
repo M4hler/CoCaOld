@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Getter
@@ -33,7 +34,7 @@ public class Investigator {
     private int accounting;
 
     @Transient
-    private List<String> successfullyUsedSkills;
+    private Map<String, Integer> successfullyUsedSkills;
     private static List<String> cantBeDeveloped = setCantBeDeveloped();
 
     public int getFieldValueByName(String name) throws Exception {
