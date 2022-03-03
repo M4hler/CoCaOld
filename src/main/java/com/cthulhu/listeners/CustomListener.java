@@ -1,14 +1,8 @@
 package com.cthulhu.listeners;
 
-import com.cthulhu.events.client.EventDevelop;
-import com.cthulhu.events.client.EventPush;
-import com.cthulhu.events.client.EventRoll;
-import com.cthulhu.events.client.EventUseLuck;
-import com.cthulhu.events.server.EventDevelopResult;
-import com.cthulhu.events.server.EventPushResult;
-import com.cthulhu.events.server.EventRollResult;
+import com.cthulhu.events.client.*;
+import com.cthulhu.events.server.*;
 import com.cthulhu.events.EventType;
-import com.cthulhu.events.server.EventUseLuckResult;
 import com.cthulhu.models.Investigator;
 import com.cthulhu.services.DiceRollingService;
 import com.cthulhu.services.InvestigatorService;
@@ -19,6 +13,7 @@ import org.json.JSONObject;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import java.util.List;
+import java.util.Map;
 
 public class CustomListener implements MessageListener {
     private final String queueName;
@@ -80,6 +75,16 @@ public class CustomListener implements MessageListener {
                     System.out.println("Investigator " + eventResult.getInvestigatorName() + " got " + eventResult.getRoll() +
                             " on push roll for skill " + eventResult.getTargetSkill() + " with previously achieved gradation of " +
                             eventResult.getPreviousGradation() + " and currently achieved " + eventResult.getAchievedGradation());
+                }
+                case DEVELOP_SKILLS -> {
+                    EventDevelopSkills event = objectMapper.readValue(messageBody, EventDevelopSkills.class);
+                    Investigator investigator = investigatorService.getInvestigatorByName(event.getInvestigatorName());
+                    EventDevelopSkillsResult eventResult = new EventDevelopSkillsResult(investigator.getName(), investigator.getSuccessfullyUsedSkills());
+
+                    System.out.println("Investigator " + eventResult.getInvestigatorName() + " successfully used following skills ");
+                    for(Map.Entry<String, Integer> entry : investigator.getSuccessfullyUsedSkills().entrySet()) {
+                        System.out.println(entry.getKey() + " used " + entry.getValue() + " times");
+                    }
                 }
             }
         }

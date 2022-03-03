@@ -317,6 +317,28 @@ public class DiceRollingServiceTest {
     }
 
     @Test
+    public void firstTestSuccessThenDevelop() throws Exception {
+        when(generatorService.rollDice(any())).thenReturn(40).thenReturn(50).thenReturn(5);
+
+        Investigator investigator = Investigator.builder().name("Alice").accounting(40).build();
+        investigatorService.saveInvestigator(investigator);
+        List<Investigator> list = List.of(investigator);
+
+        diceRollingService.rollTestsAgainstTargetValue(100, list, "accounting", RollGradation.REGULAR, 0, false, false);
+        Assertions.assertEquals(1, investigator.getSuccessfullyUsedSkills().size());
+        Assertions.assertEquals(1, investigator.getSuccessfullyUsedSkills().get("accounting"));
+
+        EventDevelopResult eventResult = diceRollingService.rollDevelopTest(investigator, "accounting");
+        Assertions.assertEquals(50, eventResult.getRollResult());
+        Assertions.assertEquals(5, eventResult.getSkillGain());
+        Assertions.assertEquals("accounting", eventResult.getTargetSkill());
+        Assertions.assertEquals("Alice", eventResult.getInvestigatorName());
+
+        Investigator i = investigatorService.getInvestigatorByName("Alice");
+        Assertions.assertEquals(45, i.getAccounting());
+    }
+
+    @Test
     public void pushTestPrevSuccessNowSuccess() throws Exception {
         when(generatorService.rollDice(any())).thenReturn(40);
         Investigator investigator = Investigator.builder().name("Alice").accounting(40).build();
