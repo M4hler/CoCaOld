@@ -31,7 +31,7 @@ public class JmsController {
     }
 
     @PostMapping("/createQueue")
-    public void createQueue(@RequestParam String name) throws JMSException {
+    public void createQueue(@RequestBody String name) throws JMSException {
         Session session = connectionFactory.createConnection().createSession(false, Session.AUTO_ACKNOWLEDGE);
         Queue queue = session.createQueue(name);
         MessageConsumer consumer = session.createConsumer(queue);
