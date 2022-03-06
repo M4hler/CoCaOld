@@ -11,5 +11,6 @@
 
     <modules>
         <module>CoCa-server</module>
+        <module>CoCa-client</module>
     </modules>
 </project>
