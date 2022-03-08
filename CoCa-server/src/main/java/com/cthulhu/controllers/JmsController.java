@@ -37,7 +37,7 @@ public class JmsController {
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         Queue queue = session.createQueue(name);
         MessageConsumer consumer = session.createConsumer(queue);
-        consumer.setMessageListener(new CustomListener(name, diceRollingService, investigatorService, luckService));
+        consumer.setMessageListener(new CustomListener(name, jmsTemplate, diceRollingService, investigatorService, luckService));
     }
 
     @PostMapping("/sendToQueue")

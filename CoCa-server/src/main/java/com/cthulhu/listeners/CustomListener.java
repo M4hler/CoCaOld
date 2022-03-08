@@ -9,6 +9,7 @@ import com.cthulhu.services.InvestigatorService;
 import com.cthulhu.services.LuckService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
+import org.springframework.jms.core.JmsTemplate;
 
 import javax.jms.Message;
 import javax.jms.MessageListener;
@@ -17,14 +18,17 @@ import java.util.Map;
 
 public class CustomListener implements MessageListener {
     private final String queueName;
+    private final JmsTemplate jmsTemplate;
     private final ObjectMapper objectMapper;
     private final DiceRollingService diceRollingService;
     private final InvestigatorService investigatorService;
     private final LuckService luckService;
 
-    public CustomListener(String queueName, DiceRollingService diceRollingService, InvestigatorService investigatorService, LuckService luckService) {
-        this.queueName = queueName;
+    public CustomListener(String queueName, JmsTemplate jmsTemplate, DiceRollingService diceRollingService,
+                          InvestigatorService investigatorService, LuckService luckService) {
         objectMapper = new ObjectMapper();
+        this.queueName = queueName;
+        this.jmsTemplate = jmsTemplate;
         this.diceRollingService = diceRollingService;
         this.investigatorService = investigatorService;
         this.luckService = luckService;
@@ -85,6 +89,13 @@ public class CustomListener implements MessageListener {
                     for(Map.Entry<String, Integer> entry : investigator.getSuccessfullyUsedSkills().entrySet()) {
                         System.out.println(entry.getKey() + " used " + entry.getValue() + " times");
                     }
+                }
+                case INVESTIGATORS -> {
+                    List<Investigator> investigators = investigatorService.getAllInvestigators();
+                    EventInvestigatorsResult eventResult = new EventInvestigatorsResult(investigators);
+                    eventResult.setEventType(EventType.INVESTIGATORS_RESULT);
+                    eventResult.setTargetQueue("testQueue");
+                    jmsTemplate.convertAndSend(eventResult.getTargetQueue(), eventResult);
                 }
             }
         }
