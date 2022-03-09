@@ -1,7 +1,6 @@
 package com.cthulhu;
 
 import com.cthulhu.listeners.GeneralListener;
-import com.cthulhu.scenes.CoCaScene;
 import com.cthulhu.scenes.FirstScene;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -11,14 +10,18 @@ import javax.jms.*;
 
 public class Application extends javafx.application.Application {
     private Stage stage;
+    private MessageProducer producer;
+    private MessageConsumer consumer;
+    private GeneralListener generalListener;
+    private Session session;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //setUpConnection();
+        setUpConnection();
 
         stage = new Stage();
-        CoCaScene firstScene = new FirstScene(this);
-        changeScene(firstScene.getScene());
+        FirstScene firstScene = new FirstScene(this, producer, session);
+        generalListener.setScene(firstScene);
     }
 
     public static void main(String[] args) {
@@ -34,10 +37,11 @@ public class Application extends javafx.application.Application {
         ConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
         Connection connection = connectionFactory.createConnection();
         connection.start();
-        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+        session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         Queue queue = session.createQueue("testQueue");
-        MessageProducer producer = session.createProducer(queue);
-        MessageConsumer consumer = session.createConsumer(queue);
-        consumer.setMessageListener(new GeneralListener());
+        producer = session.createProducer(queue);
+        consumer = session.createConsumer(queue);
+        generalListener = new GeneralListener();
+        consumer.setMessageListener(generalListener);
     }
 }
