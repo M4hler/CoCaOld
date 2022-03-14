@@ -29,6 +29,7 @@ public class Investigator {
     private int power;
     private int education;
 
+    private int sanity;
     private int luck;
 
     private int accounting;
