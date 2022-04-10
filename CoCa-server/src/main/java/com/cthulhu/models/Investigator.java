@@ -31,6 +31,8 @@ public class Investigator {
 
     private int sanity;
     private int luck;
+    private int hitPoints;
+    private int magicPoints;
 
     private int accounting;
 
