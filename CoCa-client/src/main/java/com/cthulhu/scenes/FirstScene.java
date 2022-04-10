@@ -40,7 +40,7 @@ public class FirstScene implements CoCaScene {
         b.setOnAction(this::buttonAction);
         vBox.getChildren().add(b);
 
-        scene = new Scene(vBox, 800, 600);
+        scene = new Scene(vBox, 900, 600);
         addGridPane(Investigator.builder().name("Alice Carter").strength(50).constitution(60).size(50).dexterity(40)
                 .appearance(70).intelligence(80).power(60).education(50).sanity(70).luck(36).hitPoints(9).magicPoints(10).build());
         application.changeScene(scene);
@@ -89,16 +89,26 @@ public class FirstScene implements CoCaScene {
         gridPane.add(new Label("Magic Points"), 13, 1);
         gridPane.add(new Label(String.valueOf(investigator.getMagicPoints())), 14, 1);
 
+        Button readyButton = new Button("Not ready");
+        readyButton.setOnAction(this::changeReadyStatus);
+
+        gridPane.add(readyButton, 15, 0);
+
         ColumnConstraints standardConstraint = new ColumnConstraints();
         ColumnConstraints nameColumnConstraint = new ColumnConstraints(140, 140, 140, Priority.ALWAYS, HPos.CENTER, true);
         ColumnConstraints centralConstraint = new ColumnConstraints(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE,
                 Control.USE_PREF_SIZE, Priority.ALWAYS, HPos.CENTER, true);
-        for(int i = 0; i <= 11; i++) {
+        ColumnConstraints buttonConstraint = new ColumnConstraints(100, 100, 100, Priority.ALWAYS, HPos.CENTER, true);
+
+        for(int i = 0; i <= 15; i++) {
             if(i == 1) {
                 gridPane.getColumnConstraints().add(nameColumnConstraint);
             }
             else if(i == 10) {
                 gridPane.getColumnConstraints().add(centralConstraint);
+            }
+            else if(i == 15) {
+                gridPane.getColumnConstraints().add(buttonConstraint);
             }
             else {
                 gridPane.getColumnConstraints().add(standardConstraint);
@@ -106,6 +116,17 @@ public class FirstScene implements CoCaScene {
         }
 
         Platform.runLater(() -> vBox.getChildren().add(gridPane));
+    }
+
+    private void changeReadyStatus(ActionEvent actionEvent) {
+        Button button = (Button)actionEvent.getSource();
+        if(button.getText().equals("Not ready")) {
+            button.setText("Ready");
+        }
+        else {
+            button.setText("Not ready");
+        }
+        vBox.requestFocus();
     }
 
     private void buttonAction(ActionEvent actionEvent) {
