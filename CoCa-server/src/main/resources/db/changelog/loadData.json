@@ -1,0 +1,114 @@
+{
+  "databaseChangeLog": [
+    {
+      "changeSet": {
+        "id": "Load initial data",
+        "author": "Oskar Makowski",
+        "changes": [
+          {
+            "loadData": {
+              "encoding": "UTF-8",
+              "file": "db/data/investigatorData.csv",
+              "separator": ";",
+              "schemaName": "public",
+              "tableName": "investigator",
+              "usePreparedStatements": true,
+              "columns": [
+                {
+                  "column": {
+                    "header": "name",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "column": {
+                    "header": "owner",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "column": {
+                    "header": "strength",
+                    "type": "NUMERIC"
+                  }
+                },
+                {
+                  "column": {
+                    "header": "constitution",
+                    "type": "NUMERIC"
+                  }
+                },
+                {
+                  "column": {
+                    "header": "size",
+                    "type": "NUMERIC"
+                  }
+                },
+                {
+                  "column": {
+                    "header": "dexterity",
+                    "type": "NUMERIC"
+                  }
+                },
+                {
+                  "column": {
+                    "header": "appearance",
+                    "type": "NUMERIC"
+                  }
+                },
+                {
+                  "column": {
+                    "header": "intelligence",
+                    "type": "NUMERIC"
+                  }
+                },
+                {
+                  "column": {
+                    "header": "power",
+                    "type": "NUMERIC"
+                  }
+                },
+                {
+                  "column": {
+                    "header": "education",
+                    "type": "NUMERIC"
+                  }
+                },
+                {
+                  "column": {
+                    "header": "sanity",
+                    "type": "NUMERIC"
+                  }
+                },
+                {
+                  "column": {
+                    "header": "luck",
+                    "type": "NUMERIC"
+                  }
+                },
+                {
+                  "column": {
+                    "header": "hit_points",
+                    "type": "NUMERIC"
+                  }
+                },
+                {
+                  "column": {
+                    "header": "magic_points",
+                    "type": "NUMERIC"
+                  }
+                },
+                {
+                  "column": {
+                    "header": "accounting",
+                    "type": "NUMERIC"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

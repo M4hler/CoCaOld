@@ -1,0 +1,35 @@
+{
+  "databaseChangeLog": [
+    {
+      "changeSet": {
+        "id": "Create InvestigatorsToSkills table",
+        "author": "Oskar Makowski",
+        "changes": {
+          "createTable": {
+            "tableName": "investigators_to_skills",
+            "columns": [
+              {
+                "column": {
+                  "name": "investigator_name",
+                  "type": "nvarchar(40)",
+                  "constraints": {
+                    "nullable": false
+                  }
+                }
+              },
+              {
+                "column": {
+                  "name": "skill_name",
+                  "type": "nvarchar(40)",
+                  "constraints": {
+                    "nullable": false
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

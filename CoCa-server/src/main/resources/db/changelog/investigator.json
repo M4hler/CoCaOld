@@ -1,0 +1,153 @@
+{
+  "databaseChangeLog": [
+    {
+      "changeSet": {
+        "id": "Create Investigator table",
+        "author": "Oskar Makowski",
+        "changes": {
+          "createTable": {
+            "tableName": "investigator",
+            "columns": [
+              {
+                "column": {
+                  "name": "name",
+                  "type": "nvarchar(40)",
+                  "constraints": {
+                    "nullable": false,
+                    "primaryKey": true
+                  }
+                }
+              },
+              {
+                "column": {
+                  "name": "owner",
+                  "type": "nvarchar(40)",
+                  "constraints": {
+                    "nullable": true
+                  }
+                }
+              },
+              {
+                "column": {
+                  "name": "strength",
+                  "type": "integer",
+                  "constraints": {
+                    "nullable": true
+                  }
+                }
+              },
+              {
+                "column": {
+                  "name": "constitution",
+                  "type": "integer",
+                  "constraints": {
+                    "nullable": true
+                  }
+                }
+              },
+              {
+                "column": {
+                  "name": "size",
+                  "type": "integer",
+                  "constraints": {
+                    "nullable": true
+                  }
+                }
+              },
+              {
+                "column": {
+                  "name": "dexterity",
+                  "type": "integer",
+                  "constraints": {
+                    "nullable": true
+                  }
+                }
+              },
+              {
+                "column": {
+                  "name": "appearance",
+                  "type": "integer",
+                  "constraints": {
+                    "nullable": true
+                  }
+                }
+              },
+              {
+                "column": {
+                  "name": "intelligence",
+                  "type": "integer",
+                  "constraints": {
+                    "nullable": true
+                  }
+                }
+              },
+              {
+                "column": {
+                  "name": "power",
+                  "type": "integer",
+                  "constraints": {
+                    "nullable": true
+                  }
+                }
+              },
+              {
+                "column": {
+                  "name": "education",
+                  "type": "integer",
+                  "constraints": {
+                    "nullable": true
+                  }
+                }
+              },
+              {
+                "column": {
+                  "name": "sanity",
+                  "type": "integer",
+                  "constraints": {
+                    "nullable": true
+                  }
+                }
+              },
+              {
+                "column": {
+                  "name": "luck",
+                  "type": "integer",
+                  "constraints": {
+                    "nullable": true
+                  }
+                }
+              },
+              {
+                "column": {
+                  "name": "hit_points",
+                  "type": "integer",
+                  "constraints": {
+                    "nullable": true
+                  }
+                }
+              },
+              {
+                "column": {
+                  "name": "magic_points",
+                  "type": "integer",
+                  "constraints": {
+                    "nullable": true
+                  }
+                }
+              },
+              {
+                "column": {
+                  "name": "accounting",
+                  "type": "integer",
+                  "constraints": {
+                    "nullable": true
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

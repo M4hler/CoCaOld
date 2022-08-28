@@ -17,8 +17,11 @@ spring:
             path: /h2
         settings:
             web-allow-others = true
+    liquibase:
+        change-log: classpath:/db/changelog/db-changelog-master.json
     jpa:
-        defer-datasource-initialization: true
+        hibernate:
+            ddl-auto: validate
 
 logging:
     level:

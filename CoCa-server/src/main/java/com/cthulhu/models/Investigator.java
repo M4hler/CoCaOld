@@ -3,11 +3,10 @@ package com.cthulhu.models;
 import lombok.*;
 import org.apache.commons.beanutils.PropertyUtils;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -35,6 +34,12 @@ public class Investigator {
     private int magicPoints;
 
     private int accounting;
+
+    @ManyToMany
+    @JoinTable(name = "InvestigatorsToSkills",
+            joinColumns = {@JoinColumn(name = "investigatorName")},
+            inverseJoinColumns = {@JoinColumn(name = "skillName")})
+    private Set<Skill> skills;
 
     @Transient
     private Map<String, Integer> successfullyUsedSkills;

@@ -1,0 +1,45 @@
+{
+  "databaseChangeLog": [
+    {
+      "changeSet": {
+        "id": "Create Skill table",
+        "author": "Oskar Makowski",
+        "changes": {
+          "createTable": {
+            "tableName": "skill",
+            "columns": [
+              {
+                "column": {
+                  "name": "skill_name",
+                  "type": "nvarchar(40)",
+                  "constraints": {
+                    "nullable": false,
+                    "primaryKey": true
+                  }
+                }
+              },
+              {
+                "column": {
+                  "name": "skill_value",
+                  "type": "integer",
+                  "constraints": {
+                    "nullable": false
+                  }
+                }
+              },
+              {
+                "column": {
+                  "name": "tag",
+                  "type": "nvarchar(40)",
+                  "constraints": {
+                    "nullable": false
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

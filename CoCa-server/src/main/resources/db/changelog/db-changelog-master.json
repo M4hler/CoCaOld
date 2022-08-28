@@ -1,0 +1,28 @@
+{
+  "databaseChangeLog": [
+    {
+      "include": {
+        "file": "investigator.json",
+        "relativeToChangelogFile": true
+      }
+    },
+    {
+      "include": {
+        "file": "investigatorsToSkills.json",
+        "relativeToChangelogFile": true
+      }
+    },
+    {
+      "include": {
+        "file": "skill.json",
+        "relativeToChangelogFile": true
+      }
+    },
+    {
+      "include": {
+        "file": "loadData.json",
+        "relativeToChangelogFile": true
+      }
+    }
+  ]
+}
