@@ -8,7 +8,7 @@
     },
     {
       "include": {
-        "file": "investigatorsToSkills.json",
+        "file": "investigatorToSkill.json",
         "relativeToChangelogFile": true
       }
     },

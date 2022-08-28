@@ -6,7 +6,6 @@ import org.apache.commons.beanutils.PropertyUtils;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -35,11 +34,8 @@ public class Investigator {
 
     private int accounting;
 
-    @ManyToMany
-    @JoinTable(name = "InvestigatorsToSkills",
-            joinColumns = {@JoinColumn(name = "investigatorName")},
-            inverseJoinColumns = {@JoinColumn(name = "skillName")})
-    private Set<Skill> skills;
+    @OneToMany(mappedBy = "investigator")
+    private List<InvestigatorToSkill> skills;
 
     @Transient
     private Map<String, Integer> successfullyUsedSkills;
@@ -59,6 +55,6 @@ public class Investigator {
 
     private static List<String> setCantBeDeveloped() {
         return List.of("strength", "constitution", "size", "dexterity", "appearance", "intelligence", "power", "education",
-                "sanity", "creditRating", "cthulhuMythos");
+                "sanity", "credit rating", "cthulhu mythos");
     }
 }

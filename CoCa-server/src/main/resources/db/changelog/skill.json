@@ -20,15 +20,6 @@
               },
               {
                 "column": {
-                  "name": "skill_value",
-                  "type": "integer",
-                  "constraints": {
-                    "nullable": false
-                  }
-                }
-              },
-              {
-                "column": {
                   "name": "tag",
                   "type": "nvarchar(40)",
                   "constraints": {

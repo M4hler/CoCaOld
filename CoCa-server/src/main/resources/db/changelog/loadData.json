@@ -106,6 +106,60 @@
                 }
               ]
             }
+          },
+          {
+            "loadData": {
+              "encoding": "UTF-8",
+              "file": "db/data/investigatorToSkillData.csv",
+              "separator": ";",
+              "schemaName": "public",
+              "tableName": "investigator_to_skill",
+              "usePreparedStatements": true,
+              "columns": [
+                {
+                  "column": {
+                    "header": "investigator_name",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "column": {
+                    "header": "skill_name",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "column": {
+                    "header": "skill_value",
+                    "type": "NUMERIC"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "loadData": {
+              "encoding": "UTF-8",
+              "file": "db/data/skillData.csv",
+              "separator": ";",
+              "schemaName": "public",
+              "tableName": "skill",
+              "usePreparedStatements": true,
+              "columns": [
+                {
+                  "column": {
+                    "header": "skill_name",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "column": {
+                    "header": "tag",
+                    "type": "STRING"
+                  }
+                }
+              ]
+            }
           }
         ]
       }

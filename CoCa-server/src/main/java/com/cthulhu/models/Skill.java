@@ -2,15 +2,14 @@ package com.cthulhu.models;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import java.util.Set;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 @Entity
 public class Skill {
     @Id
     private String skillName;
-    @ManyToMany(mappedBy = "skills")
-    private Set<Investigator> investigators;
-    private int skillValue;
+    @OneToMany(mappedBy = "skill")
+    private List<InvestigatorToSkill> investigators;
     private String tag;
 }
