@@ -34,7 +34,7 @@ public class Investigator {
 
     private int accounting;
 
-    @OneToMany(mappedBy = "investigator")
+    @OneToMany(mappedBy = "investigator", fetch = FetchType.EAGER, cascade = CascadeType.ALL) //cascade = CascadeType.ALL, fetch = FetchType.EAGER?
     private List<InvestigatorToSkill> skills;
 
     @Transient

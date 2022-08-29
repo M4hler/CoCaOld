@@ -22,7 +22,7 @@ spring:
     jpa:
         hibernate:
             ddl-auto: validate
-
+        open-in-view: false
 logging:
     level:
         org.apache.activemq.audit.base: WARN

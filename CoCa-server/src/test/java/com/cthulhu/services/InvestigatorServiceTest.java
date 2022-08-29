@@ -1,10 +1,15 @@
 package com.cthulhu.services;
 
 import com.cthulhu.models.Investigator;
+import com.cthulhu.models.InvestigatorToSkill;
+import com.cthulhu.models.Skill;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootTest
 public class InvestigatorServiceTest {
@@ -103,5 +108,24 @@ public class InvestigatorServiceTest {
         investigatorService.reduceSuccessfullyUsedSkill(investigator, "accounting");
         Assertions.assertEquals(1, investigator.getSuccessfullyUsedSkills().size());
         Assertions.assertEquals(1, investigator.getSuccessfullyUsedSkills().get("accounting"));
+    }
+
+    @Test
+    public void createInvestigatorAndCascadeSkills() {
+        Investigator investigator = Investigator.builder().name("John").strength(70).build();
+
+        List<InvestigatorToSkill> skills = new ArrayList<>();
+        Skill skill = new Skill("history", new ArrayList<>(), 5, "base");
+        skills.add(new InvestigatorToSkill(investigator, skill, 30));
+        investigator.setSkills(skills);
+
+        investigatorService.saveInvestigator(investigator);
+
+        investigator = investigatorService.getInvestigatorByName("John");
+        Assertions.assertEquals(1, investigator.getSkills().size());
+
+        InvestigatorToSkill investigatorSkill = investigator.getSkills().get(0);
+        Assertions.assertEquals("history", investigatorSkill.getSkill().getSkillName());
+        Assertions.assertEquals(30, investigatorSkill.getSkillValue());
     }
 }

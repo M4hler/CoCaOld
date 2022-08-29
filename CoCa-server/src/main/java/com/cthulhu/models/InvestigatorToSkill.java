@@ -1,8 +1,15 @@
 package com.cthulhu.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class InvestigatorToSkill {
     @EmbeddedId
     private InvestigatorToSkillId id;
@@ -15,4 +22,11 @@ public class InvestigatorToSkill {
     @MapsId("skill")
     private Skill skill;
     private int skillValue;
+
+    public InvestigatorToSkill(Investigator investigator, Skill skill, int skillValue) {
+        id = new InvestigatorToSkillId(investigator.getName(), skill.getSkillName());
+        this.investigator = investigator;
+        this.skill = skill;
+        this.skillValue = skillValue;
+    }
 }
