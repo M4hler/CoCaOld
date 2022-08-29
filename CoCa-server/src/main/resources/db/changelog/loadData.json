@@ -154,6 +154,12 @@
                 },
                 {
                   "column": {
+                    "header": "base_value",
+                    "type": "NUMERIC"
+                  }
+                },
+                {
+                  "column": {
                     "header": "tag",
                     "type": "STRING"
                   }

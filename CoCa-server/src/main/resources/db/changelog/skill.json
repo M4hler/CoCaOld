@@ -20,6 +20,15 @@
               },
               {
                 "column": {
+                  "name": "base_value",
+                  "type": "integer",
+                  "constraints": {
+                    "nullable": true
+                  }
+                }
+              },
+              {
+                "column": {
                   "name": "tag",
                   "type": "nvarchar(40)",
                   "constraints": {

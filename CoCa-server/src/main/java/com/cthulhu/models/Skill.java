@@ -11,5 +11,6 @@ public class Skill {
     private String skillName;
     @OneToMany(mappedBy = "skill")
     private List<InvestigatorToSkill> investigators;
+    private int baseValue;
     private String tag;
 }

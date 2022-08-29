@@ -1,41 +1,41 @@
-skill_name;tag
-accounting;base
-anthropology;base
-appraise;base
-archeology;base
-charm;base
-climb;base
-credit rating;base
-cthulhu mythos;base
-disguise;base
-dodge;base
-drive auto;base
-electrical repair;base
-fast talk;base
-brawl;fighting
-handgun;firearms
-rifle/shotgun;firearms
-first aid;base
-history;base
-intimidate;base
-jump;base
-law;base
-library use;base
-listen;base
-locksmith;base
-mechanical repair;base
-medicine;base
-natural world;base
-navigate;base
-occult;base
-operate heavy machinery;base
-persuade;base
-psychology;base
-psychoanalysis;base
-ride;base
-sleight of hand;base
-spot hidden;base
-stealth;base
-swim;base
-throw;base
-track;base
+skill_name;base_value;tag
+accounting;5;base
+anthropology;1;base
+appraise;5;base
+archeology;1;base
+charm;15;base
+climb;20;base
+credit rating;0;base
+cthulhu mythos;0;base
+disguise;5;base
+dodge;1;base
+drive auto;20;base
+electrical repair;10;base
+fast talk;5;base
+brawl;25;fighting
+handgun;20;firearms
+rifle/shotgun;25;firearms
+first aid;30;base
+history;5;base
+intimidate;15;base
+jump;20;base
+law;5;base
+library use;20;base
+listen;20;base
+locksmith;1;base
+mechanical repair;10;base
+medicine;1;base
+natural world;10;base
+navigate;10;base
+occult;5;base
+operate heavy machinery;1;base
+persuade;10;base
+psychology;10;base
+psychoanalysis;1;base
+ride;5;base
+sleight of hand;10;base
+spot hidden;25;base
+stealth;20;base
+swim;20;base
+throw;20;base
+track;10;base
