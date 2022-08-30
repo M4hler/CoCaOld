@@ -4,6 +4,7 @@ import com.cthulhu.models.Investigator;
 import com.cthulhu.models.InvestigatorToSkill;
 import com.cthulhu.models.Skill;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,14 +17,17 @@ public class InvestigatorServiceTest {
     @Autowired
     private InvestigatorService investigatorService;
 
+    @BeforeEach
+    public void beforeEach() {
+        investigatorService.deleteAll();
+    }
+
     @Test
     public void saveSingleInvestigator() {
         Investigator investigator = Investigator.builder().name("John").build();
         investigatorService.saveInvestigator(investigator);
 
         Assertions.assertEquals(1, investigatorService.getAllInvestigators().size());
-
-        investigatorService.deleteAll();
     }
 
     @Test
@@ -36,8 +40,6 @@ public class InvestigatorServiceTest {
         Assertions.assertEquals(2, investigatorService.getAllInvestigators().size());
         Assertions.assertEquals(50, investigatorService.getInvestigatorByName("John").getStrength());
         Assertions.assertEquals(60, investigatorService.getInvestigatorByName("Alice").getStrength());
-
-        investigatorService.deleteAll();
     }
 
     @Test
@@ -49,8 +51,6 @@ public class InvestigatorServiceTest {
 
         Assertions.assertEquals(1, investigatorService.getAllInvestigators().size());
         Assertions.assertEquals(60, investigatorService.getInvestigatorByName("John").getStrength());
-
-        investigatorService.deleteAll();
     }
 
     @Test
@@ -115,7 +115,7 @@ public class InvestigatorServiceTest {
         Investigator investigator = Investigator.builder().name("John").strength(70).build();
 
         List<InvestigatorToSkill> skills = new ArrayList<>();
-        Skill skill = new Skill("history", new ArrayList<>(), 5, "base");
+        Skill skill = new Skill("history", 5, "base");
         skills.add(new InvestigatorToSkill(investigator, skill, 30));
         investigator.setSkills(skills);
 
@@ -127,5 +127,36 @@ public class InvestigatorServiceTest {
         InvestigatorToSkill investigatorSkill = investigator.getSkills().get(0);
         Assertions.assertEquals("history", investigatorSkill.getSkill().getSkillName());
         Assertions.assertEquals(30, investigatorSkill.getSkillValue());
+    }
+
+    @Test
+    public void createInvestigatorAndCascadeNewSkill() {
+        Investigator investigator = Investigator.builder().name("John").strength(70).build();
+
+        List<InvestigatorToSkill> skills = new ArrayList<>();
+        Skill skill1 = new Skill("history", 5, "base");
+        Skill skill2 = new Skill("diving", 5, "custom");
+        skills.add(new InvestigatorToSkill(investigator, skill1, 30));
+        skills.add(new InvestigatorToSkill(investigator, skill2, 10));
+        investigator.setSkills(skills);
+
+        investigatorService.saveInvestigator(investigator);
+
+        investigator = investigatorService.getInvestigatorByName("John");
+        skills = investigator.getSkills();
+        Assertions.assertEquals(2, skills.size());
+
+        InvestigatorToSkill historySkill =
+                skills.stream().filter(x -> x.getSkill().getSkillName().equals("history")).findFirst().orElse(null);
+        InvestigatorToSkill divingSkill =
+                skills.stream().filter(x -> x.getSkill().getSkillName().equals("diving")).findFirst().orElse(null);
+
+        Assertions.assertNotNull(historySkill);
+        Assertions.assertEquals(30, historySkill.getSkillValue());
+        Assertions.assertEquals(5, historySkill.getSkill().getBaseValue());
+
+        Assertions.assertNotNull(divingSkill);
+        Assertions.assertEquals(10, divingSkill.getSkillValue());
+        Assertions.assertEquals(5, divingSkill.getSkill().getBaseValue());
     }
 }

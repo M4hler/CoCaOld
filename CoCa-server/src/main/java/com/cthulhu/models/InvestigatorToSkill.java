@@ -17,7 +17,7 @@ public class InvestigatorToSkill {
     @JoinColumn(name = "investigator_name")
     @MapsId("investigator")
     private Investigator investigator;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "skill_name")
     @MapsId("skill")
     private Skill skill;
