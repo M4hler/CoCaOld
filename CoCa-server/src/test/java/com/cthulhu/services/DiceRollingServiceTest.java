@@ -5,12 +5,15 @@ import com.cthulhu.events.server.EventDevelopResult;
 import com.cthulhu.events.server.EventPushResult;
 import com.cthulhu.events.server.EventRollResult;
 import com.cthulhu.models.Investigator;
+import com.cthulhu.models.InvestigatorToSkill;
+import com.cthulhu.models.Skill;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -269,7 +272,12 @@ public class DiceRollingServiceTest {
     public void developTest() throws Exception {
         when(generatorService.rollDice(any())).thenReturn(50).thenReturn(3);
 
-        Investigator investigator = Investigator.builder().name("Alice").accounting(40).build();
+        Investigator investigator = Investigator.builder().name("Alice").build();
+        List<InvestigatorToSkill> skills = new ArrayList<>();
+        Skill skill = new Skill("accounting", 5, "base");
+        skills.add(new InvestigatorToSkill(investigator, skill, 40));
+        investigator.setSkills(skills);
+
         investigatorService.saveInvestigator(investigator);
 
         EventDevelopResult eventResult = diceRollingService.rollDevelopTest(investigator, "accounting");
@@ -279,14 +287,19 @@ public class DiceRollingServiceTest {
         Assertions.assertEquals("Alice", eventResult.getInvestigatorName());
 
         Investigator i = investigatorService.getInvestigatorByName("Alice");
-        Assertions.assertEquals(43, i.getAccounting());
+        Assertions.assertEquals(43, i.getFieldValueByName("accounting"));
     }
 
     @Test
     public void developTestWithHighSkill() throws Exception {
         when(generatorService.rollDice(any())).thenReturn(99).thenReturn(3);
 
-        Investigator investigator = Investigator.builder().name("Alice").accounting(96).build();
+        Investigator investigator = Investigator.builder().name("Alice").build();
+        List<InvestigatorToSkill> skills = new ArrayList<>();
+        Skill skill = new Skill("accounting", 5, "base");
+        skills.add(new InvestigatorToSkill(investigator, skill, 96));
+        investigator.setSkills(skills);
+
         investigatorService.saveInvestigator(investigator);
 
         EventDevelopResult eventResult = diceRollingService.rollDevelopTest(investigator, "accounting");
@@ -296,14 +309,19 @@ public class DiceRollingServiceTest {
         Assertions.assertEquals("Alice", eventResult.getInvestigatorName());
 
         Investigator i = investigatorService.getInvestigatorByName("Alice");
-        Assertions.assertEquals(99, i.getAccounting());
+        Assertions.assertEquals(99, i.getFieldValueByName("accounting"));
     }
 
     @Test
     public void developTestFail() throws Exception {
         when(generatorService.rollDice(any())).thenReturn(40);
 
-        Investigator investigator = Investigator.builder().name("Alice").accounting(40).build();
+        Investigator investigator = Investigator.builder().name("Alice").build();
+        List<InvestigatorToSkill> skills = new ArrayList<>();
+        Skill skill = new Skill("accounting", 5, "base");
+        skills.add(new InvestigatorToSkill(investigator, skill, 40));
+        investigator.setSkills(skills);
+
         investigatorService.saveInvestigator(investigator);
 
         EventDevelopResult eventResult = diceRollingService.rollDevelopTest(investigator, "accounting");
@@ -313,14 +331,19 @@ public class DiceRollingServiceTest {
         Assertions.assertEquals("Alice", eventResult.getInvestigatorName());
 
         Investigator i = investigatorService.getInvestigatorByName("Alice");
-        Assertions.assertEquals(40, i.getAccounting());
+        Assertions.assertEquals(40, i.getFieldValueByName("accounting"));
     }
 
     @Test
     public void firstTestSuccessThenDevelop() throws Exception {
         when(generatorService.rollDice(any())).thenReturn(40).thenReturn(50).thenReturn(5);
 
-        Investigator investigator = Investigator.builder().name("Alice").accounting(40).build();
+        Investigator investigator = Investigator.builder().name("Alice").build();
+        List<InvestigatorToSkill> skills = new ArrayList<>();
+        Skill skill = new Skill("accounting", 5, "base");
+        skills.add(new InvestigatorToSkill(investigator, skill, 40));
+        investigator.setSkills(skills);
+
         investigatorService.saveInvestigator(investigator);
         List<Investigator> list = List.of(investigator);
 
@@ -335,13 +358,19 @@ public class DiceRollingServiceTest {
         Assertions.assertEquals("Alice", eventResult.getInvestigatorName());
 
         Investigator i = investigatorService.getInvestigatorByName("Alice");
-        Assertions.assertEquals(45, i.getAccounting());
+        Assertions.assertEquals(45, i.getFieldValueByName("accounting"));
     }
 
     @Test
     public void pushTestPrevSuccessNowSuccess() throws Exception {
         when(generatorService.rollDice(any())).thenReturn(40);
-        Investigator investigator = Investigator.builder().name("Alice").accounting(40).build();
+
+        Investigator investigator = Investigator.builder().name("Alice").build();
+        List<InvestigatorToSkill> skills = new ArrayList<>();
+        Skill skill = new Skill("accounting", 5, "base");
+        skills.add(new InvestigatorToSkill(investigator, skill, 40));
+        investigator.setSkills(skills);
+
         investigatorService.saveInvestigator(investigator);
         List<Investigator> list = List.of(investigator);
         diceRollingService.rollTestsAgainstTargetValue(100, list, "accounting", RollGradation.REGULAR, 0, false, false);
@@ -362,7 +391,13 @@ public class DiceRollingServiceTest {
     @Test
     public void pushTestPrevFailureNowSuccess() throws Exception {
         when(generatorService.rollDice(any())).thenReturn(50).thenReturn(40);
-        Investigator investigator = Investigator.builder().name("Alice").accounting(40).build();
+
+        Investigator investigator = Investigator.builder().name("Alice").build();
+        List<InvestigatorToSkill> skills = new ArrayList<>();
+        Skill skill = new Skill("accounting", 5, "base");
+        skills.add(new InvestigatorToSkill(investigator, skill, 40));
+        investigator.setSkills(skills);
+
         investigatorService.saveInvestigator(investigator);
         List<Investigator> list = List.of(investigator);
         diceRollingService.rollTestsAgainstTargetValue(100, list, "accounting", RollGradation.REGULAR, 0, false, false);
@@ -382,7 +417,13 @@ public class DiceRollingServiceTest {
     @Test
     public void pushTestPrevSuccessNowFail() throws Exception {
         when(generatorService.rollDice(any())).thenReturn(40).thenReturn(50);
-        Investigator investigator = Investigator.builder().name("Alice").accounting(40).build();
+
+        Investigator investigator = Investigator.builder().name("Alice").build();
+        List<InvestigatorToSkill> skills = new ArrayList<>();
+        Skill skill = new Skill("accounting", 5, "base");
+        skills.add(new InvestigatorToSkill(investigator, skill, 40));
+        investigator.setSkills(skills);
+
         investigatorService.saveInvestigator(investigator);
         List<Investigator> list = List.of(investigator);
         diceRollingService.rollTestsAgainstTargetValue(100, list, "accounting", RollGradation.REGULAR, 0, false, false);

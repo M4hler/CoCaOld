@@ -32,8 +32,6 @@ public class Investigator {
     private int hitPoints;
     private int magicPoints;
 
-    private int accounting;
-
     @OneToMany(mappedBy = "investigator", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<InvestigatorToSkill> skills;
 
@@ -42,11 +40,32 @@ public class Investigator {
     private static List<String> cantBeDeveloped = setCantBeDeveloped();
 
     public int getFieldValueByName(String name) throws Exception {
-        return (int)PropertyUtils.getProperty(this, name);
+        try {
+            return (int)PropertyUtils.getProperty(this, name);
+        }
+        catch(NoSuchMethodException e) {
+            InvestigatorToSkill skill =
+                    skills.stream().filter(x -> x.getSkill().getSkillName().equals(name)).findFirst().orElse(null);
+            if(skill != null) {
+                return skill.getSkillValue();
+            }
+            else {
+                return 0;
+            }
+        }
     }
 
     public void setFieldValueByName(String name, int value) throws Exception {
-        PropertyUtils.setProperty(this, name, value);
+        try {
+            PropertyUtils.setProperty(this, name, value);
+        }
+        catch(NoSuchMethodException e) {
+            InvestigatorToSkill skill =
+                    skills.stream().filter(x -> x.getSkill().getSkillName().equals(name)).findFirst().orElse(null);
+            if(skill != null) {
+                skill.setSkillValue(value);
+            }
+        }
     }
 
     public boolean ableToDevelop(String skill) {
