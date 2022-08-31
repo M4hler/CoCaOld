@@ -65,6 +65,11 @@ public class InvestigatorService {
             skills = new ArrayList<>();
         }
 
+        if(skills.stream().anyMatch(x -> x.getInvestigator().equals(investigator)
+                && x.getSkill().getSkillName().equals(skillName))) {
+            return;
+        }
+
         Skill skill = new Skill(skillName, baseValue, tag);
         InvestigatorToSkill skillToAdd = new InvestigatorToSkill(investigator, skill, skillValue);
         skills.add(skillToAdd);
