@@ -2,7 +2,6 @@ package com.cthulhu.services;
 
 import com.cthulhu.models.Investigator;
 import com.cthulhu.models.InvestigatorToSkill;
-import com.cthulhu.models.Skill;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -113,11 +112,7 @@ public class InvestigatorServiceTest {
     @Test
     public void createInvestigatorAndCascadeSkills() {
         Investigator investigator = Investigator.builder().name("John").strength(70).build();
-
-        List<InvestigatorToSkill> skills = new ArrayList<>();
-        Skill skill = new Skill("history", 5, "base");
-        skills.add(new InvestigatorToSkill(investigator, skill, 30));
-        investigator.setSkills(skills);
+        investigatorService.addSkill(investigator, "history", 5, "base", 30);
 
         investigatorService.saveInvestigator(investigator);
 
@@ -132,18 +127,13 @@ public class InvestigatorServiceTest {
     @Test
     public void createInvestigatorAndCascadeNewSkill() {
         Investigator investigator = Investigator.builder().name("John").strength(70).build();
-
-        List<InvestigatorToSkill> skills = new ArrayList<>();
-        Skill skill1 = new Skill("history", 5, "base");
-        Skill skill2 = new Skill("diving", 5, "custom");
-        skills.add(new InvestigatorToSkill(investigator, skill1, 30));
-        skills.add(new InvestigatorToSkill(investigator, skill2, 10));
-        investigator.setSkills(skills);
+        investigatorService.addSkill(investigator, "history", 5, "base", 30);
+        investigatorService.addSkill(investigator, "diving", 5, "base", 10);
 
         investigatorService.saveInvestigator(investigator);
 
         investigator = investigatorService.getInvestigatorByName("John");
-        skills = investigator.getSkills();
+        List<InvestigatorToSkill> skills = investigator.getSkills();
         Assertions.assertEquals(2, skills.size());
 
         InvestigatorToSkill historySkill =

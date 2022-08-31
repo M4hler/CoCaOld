@@ -60,11 +60,8 @@ public class Investigator {
             PropertyUtils.setProperty(this, name, value);
         }
         catch(NoSuchMethodException e) {
-            InvestigatorToSkill skill =
-                    skills.stream().filter(x -> x.getSkill().getSkillName().equals(name)).findFirst().orElse(null);
-            if(skill != null) {
-                skill.setSkillValue(value);
-            }
+            skills.stream().filter(x -> x.getSkill().getSkillName().equals(name)).findFirst()
+                    .ifPresent(skill -> skill.setSkillValue(value));
         }
     }
 

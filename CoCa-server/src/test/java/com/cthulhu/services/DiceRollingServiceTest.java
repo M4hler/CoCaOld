@@ -5,15 +5,12 @@ import com.cthulhu.events.server.EventDevelopResult;
 import com.cthulhu.events.server.EventPushResult;
 import com.cthulhu.events.server.EventRollResult;
 import com.cthulhu.models.Investigator;
-import com.cthulhu.models.InvestigatorToSkill;
-import com.cthulhu.models.Skill;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -273,10 +270,7 @@ public class DiceRollingServiceTest {
         when(generatorService.rollDice(any())).thenReturn(50).thenReturn(3);
 
         Investigator investigator = Investigator.builder().name("Alice").build();
-        List<InvestigatorToSkill> skills = new ArrayList<>();
-        Skill skill = new Skill("accounting", 5, "base");
-        skills.add(new InvestigatorToSkill(investigator, skill, 40));
-        investigator.setSkills(skills);
+        investigatorService.addSkill(investigator, "accounting", 5, "base", 40);
 
         investigatorService.saveInvestigator(investigator);
 
@@ -295,10 +289,7 @@ public class DiceRollingServiceTest {
         when(generatorService.rollDice(any())).thenReturn(99).thenReturn(3);
 
         Investigator investigator = Investigator.builder().name("Alice").build();
-        List<InvestigatorToSkill> skills = new ArrayList<>();
-        Skill skill = new Skill("accounting", 5, "base");
-        skills.add(new InvestigatorToSkill(investigator, skill, 96));
-        investigator.setSkills(skills);
+        investigatorService.addSkill(investigator, "accounting", 5, "base", 96);
 
         investigatorService.saveInvestigator(investigator);
 
@@ -317,10 +308,7 @@ public class DiceRollingServiceTest {
         when(generatorService.rollDice(any())).thenReturn(40);
 
         Investigator investigator = Investigator.builder().name("Alice").build();
-        List<InvestigatorToSkill> skills = new ArrayList<>();
-        Skill skill = new Skill("accounting", 5, "base");
-        skills.add(new InvestigatorToSkill(investigator, skill, 40));
-        investigator.setSkills(skills);
+        investigatorService.addSkill(investigator, "accounting", 5, "base", 40);
 
         investigatorService.saveInvestigator(investigator);
 
@@ -339,10 +327,7 @@ public class DiceRollingServiceTest {
         when(generatorService.rollDice(any())).thenReturn(40).thenReturn(50).thenReturn(5);
 
         Investigator investigator = Investigator.builder().name("Alice").build();
-        List<InvestigatorToSkill> skills = new ArrayList<>();
-        Skill skill = new Skill("accounting", 5, "base");
-        skills.add(new InvestigatorToSkill(investigator, skill, 40));
-        investigator.setSkills(skills);
+        investigatorService.addSkill(investigator, "accounting", 5, "base", 40);
 
         investigatorService.saveInvestigator(investigator);
         List<Investigator> list = List.of(investigator);
@@ -366,10 +351,7 @@ public class DiceRollingServiceTest {
         when(generatorService.rollDice(any())).thenReturn(40);
 
         Investigator investigator = Investigator.builder().name("Alice").build();
-        List<InvestigatorToSkill> skills = new ArrayList<>();
-        Skill skill = new Skill("accounting", 5, "base");
-        skills.add(new InvestigatorToSkill(investigator, skill, 40));
-        investigator.setSkills(skills);
+        investigatorService.addSkill(investigator, "accounting", 5, "base", 40);
 
         investigatorService.saveInvestigator(investigator);
         List<Investigator> list = List.of(investigator);
@@ -393,10 +375,7 @@ public class DiceRollingServiceTest {
         when(generatorService.rollDice(any())).thenReturn(50).thenReturn(40);
 
         Investigator investigator = Investigator.builder().name("Alice").build();
-        List<InvestigatorToSkill> skills = new ArrayList<>();
-        Skill skill = new Skill("accounting", 5, "base");
-        skills.add(new InvestigatorToSkill(investigator, skill, 40));
-        investigator.setSkills(skills);
+        investigatorService.addSkill(investigator, "accounting", 5, "base", 40);
 
         investigatorService.saveInvestigator(investigator);
         List<Investigator> list = List.of(investigator);
@@ -419,10 +398,7 @@ public class DiceRollingServiceTest {
         when(generatorService.rollDice(any())).thenReturn(40).thenReturn(50);
 
         Investigator investigator = Investigator.builder().name("Alice").build();
-        List<InvestigatorToSkill> skills = new ArrayList<>();
-        Skill skill = new Skill("accounting", 5, "base");
-        skills.add(new InvestigatorToSkill(investigator, skill, 40));
-        investigator.setSkills(skills);
+        investigatorService.addSkill(investigator, "accounting", 5, "base", 40);
 
         investigatorService.saveInvestigator(investigator);
         List<Investigator> list = List.of(investigator);

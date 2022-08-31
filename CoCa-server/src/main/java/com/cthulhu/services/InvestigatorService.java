@@ -1,10 +1,13 @@
 package com.cthulhu.services;
 
 import com.cthulhu.models.Investigator;
+import com.cthulhu.models.InvestigatorToSkill;
+import com.cthulhu.models.Skill;
 import com.cthulhu.repositories.InvestigatorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,5 +57,18 @@ public class InvestigatorService {
         Map<String, Integer> skills = investigator.getSuccessfullyUsedSkills();
         skills.put(skill, skills.get(skill) - 1);
         investigator.setSuccessfullyUsedSkills(skills);
+    }
+
+    public void addSkill(Investigator investigator, String skillName, int baseValue, String tag, int skillValue) {
+        List<InvestigatorToSkill> skills = investigator.getSkills();
+        if(skills == null) {
+            skills = new ArrayList<>();
+        }
+
+        Skill skill = new Skill(skillName, baseValue, tag);
+        InvestigatorToSkill skillToAdd = new InvestigatorToSkill(investigator, skill, skillValue);
+        skills.add(skillToAdd);
+
+        investigator.setSkills(skills);
     }
 }
