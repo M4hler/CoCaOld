@@ -137,7 +137,25 @@
               },
               {
                 "column": {
-                  "name": "accounting",
+                  "name": "build",
+                  "type": "integer",
+                  "constraints": {
+                    "nullable": true
+                  }
+                }
+              },
+              {
+                "column": {
+                  "name": "damage_bonus",
+                  "type": "nvarchar(5)",
+                  "constraints": {
+                    "nullable": true
+                  }
+                }
+              },
+              {
+                "column": {
+                  "name": "movement",
                   "type": "integer",
                   "constraints": {
                     "nullable": true

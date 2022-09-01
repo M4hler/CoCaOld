@@ -31,6 +31,9 @@ public class Investigator {
     private int luck;
     private int hitPoints;
     private int magicPoints;
+    private int build;
+    private String damageBonus;
+    private int movement;
 
     @OneToMany(mappedBy = "investigator", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<InvestigatorToSkill> skills;
