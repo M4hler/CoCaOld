@@ -67,7 +67,7 @@ public class EventRollTest {
         jmsController.sendToQueue(eventRoll);
         jmsController.sendToQueue(eventRoll);
 
-        verify(generatorService, timeout(200).times(2)).rollDice(any());
+        verify(generatorService, timeout(400).times(2)).rollDice(any());
         //verify(diceRollingService, times(2)).rollTestsAgainstTargetValue(any(), any(), any(), any(), any(), anyBoolean(), anyBoolean());
     }
 

@@ -6,7 +6,6 @@ import com.cthulhu.listeners.CustomListener;
 import com.cthulhu.services.DiceRollingService;
 import com.cthulhu.services.InvestigatorService;
 import com.cthulhu.services.LuckService;
-import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +22,8 @@ public class JmsController {
     private InvestigatorService investigatorService;
     @Autowired
     private LuckService luckService;
+    @Autowired
+    private ConnectionFactory connectionFactory;
 
     @GetMapping("/get")
     public void simpleGet() {
@@ -31,7 +32,6 @@ public class JmsController {
 
     @PostMapping("/createQueue")
     public void createQueue(@RequestBody String name) throws JMSException {
-        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
         Connection connection = connectionFactory.createConnection();
         connection.start();
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
