@@ -1,0 +1,10 @@
+---
+applications:
+  - name: CoCa-server
+    buildpack: java_buildpack
+    path: target/CoCa-server-1.0-SNAPSHOT.jar
+    random-route: true
+    services:
+      - CoCa-EventMesh
+    env:
+      JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 17.+ }}'
